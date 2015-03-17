@@ -1,0 +1,20 @@
+/* CSS declarations go here */
+
+div.cell {
+  display: table-cell;
+}
+
+span.header {
+  font-weight: bold;
+}
+
+div.ethereumInfo {
+  border: 1px solid black;
+  line-height: normal;
+  font-size: small;
+  background: #D8F6CE;
+}
+
+div.space {
+  padding: 5px;
+}
