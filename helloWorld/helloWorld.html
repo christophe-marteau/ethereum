@@ -12,7 +12,7 @@
     {{> ethereumNode}}
     <div class="space"></div>
     <strong>Ethereum client :</strong>
-    {{> ethereumClientInfo}}
+    {{> ethereumClientBinded}}
   </div>
 </body>
 
@@ -29,6 +29,14 @@
     <div class="ethereumInfo"><span class="header">Node host : </span>{{ethereumNodeHost}}</div>
     <div class="ethereumInfo"><span class="header">Node port : </span>{{ethereumNodePort}}</div>
   {{/with}}
+</template>
+
+<template name="ethereumClientBinded">
+  {{#if isClientBinded}}
+    {{> ethereumClientInfo}}
+  {{else}}
+    <div class="ethereumInfo"><span class="header">Listen state : </span>Offline</div>
+  {{/if}}
 </template>
 
 <template name="ethereumClientInfo">

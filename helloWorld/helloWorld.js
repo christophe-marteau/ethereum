@@ -15,21 +15,25 @@ if (Meteor.isClient) {
       ethereumNodePort: String(nodeSettings.port)
     }
   });
+ 
+  Template.ethereumClientBinded.helpers({
+    isClientBinded: web3.net.listening
+  });
 
   Template.ethereumClientInfo.helpers({
-    ethereumClientInfo: { 
-      ethereumClientVersion: String(web3.client),
-      ethereumClientListenState: String(web3.net.listening),
-      ethereumClientPeerCount: String(web3.net.peerCount),
-      ethereumClientMiningState: String(web3.eth.mining),
-      ethereumClientCoinbaseAddress: String(web3.eth.coinbase)
-    }
+      ethereumClientInfo: { 
+        ethereumClientVersion: String(web3.client),
+        ethereumClientListenState: String(web3.net.listening),
+        ethereumClientPeerCount: String(web3.net.peerCount),
+        ethereumClientMiningState: String(web3.eth.mining),
+        ethereumClientCoinbaseAddress: String(web3.eth.coinbase)
+      }
   });
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
+    console.log('')
     console.log('Connection to node "' + nodeSettings.host + '" on port "' + nodeSettings.port + '".')
-    // code to run on server at startup
   });
 }
