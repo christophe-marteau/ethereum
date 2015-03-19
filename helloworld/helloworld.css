@@ -1,11 +1,24 @@
 /* CSS declarations go here */
 
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+h1 {
+  text-align: center;
+}
+
+div.global {
+  display: table;
+  margin: 0px auto;
+}
+
 div.cell {
   display: table-cell;
   background: #E6E6E6;
   padding: 10px;
   border-radius: 15px;
-  position: center;
 }
 
 span.header {
