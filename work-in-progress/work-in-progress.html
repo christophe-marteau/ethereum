@@ -1,0 +1,74 @@
+<head>
+  <title>Ethereum Hello World</title>
+</head>
+
+<body>
+  <h1>Hello World Ðapp</h1>
+  <div class="global">
+    {{> ethereumClientBinded}}
+  </div>
+</body>
+
+<template name="ethereumInfo">
+  {{#with ethereumInfo}}
+    <div class="ethereumInfo"><span class="header">Version : </span>{{ethereumVersion}}</div>
+    <div class="ethereumInfo"><span class="header">Network version : </span>{{ethereumNetworkVersion}}</div>
+    <div class="ethereumInfo"><span class="header">API version : </span>{{ethereumAPIVersion}}</div>
+  {{/with}}
+</template>
+
+<template name="ethereumNode">
+  {{#with ethereumNode}}
+    <div class="ethereumInfo"><span class="header">Node host : </span>{{ethereumNodeHost}}</div>
+    <div class="ethereumInfo"><span class="header">Node port : </span>{{ethereumNodePort}}</div>
+  {{/with}}
+</template>
+
+<template name="ethereumClientBinded">
+<!--
+  <div class="cell">  
+    <strong>Ethereum :</strong>
+    {{> ethereumInfo}}
+    <div class="space"></div>
+    <strong>Ethereum Node :</strong>
+    {{> ethereumNode}} 
+    <div class="space"></div>
+    <strong>Ethereum client :</strong>
+    {{#if isClientBinded}}
+      {{> ethereumClientInfo}}
+    {{else}}
+      <div class="ethereumInfo"><span class="header">Listen state : </span>Offline</div>
+    {{/if}}
+  </div>
+-->
+  {{#if isClientBinded}}
+    <div class="cell">
+      <strong>Balance :</strong>
+      {{> ethereumCoinInfo}}
+    </div>
+  {{/if}}
+</template>
+
+
+
+<template name="ethereumClientInfo">
+  {{#with ethereumClientInfo}}
+    <div class="ethereumInfo"><span class="header">Version : </span>{{ethereumClientVersion}}</div>
+    <div class="ethereumInfo"><span class="header">Listen state : </span>{{ethereumClientListenState}}</div>
+    <div class="ethereumInfo"><span class="header">Peer count : </span>{{ethereumClientPeerCount}}</div>
+    <div class="ethereumInfo"><span class="header">Mining state : </span>{{ethereumClientMiningState}}</div>
+  {{/with}}
+</template>
+
+<template name="ethereumCoinInfo">
+  {{#with ethereumCoinInfo}}
+<!--    <div class="ethereumInfo"><span class="header">Coinbase address : </span>{{ethereumCoinBaseAddress}}</div> -->
+    <div class="ethereumInfo"><span class="header">Balance : </span>{{ethereumCoinBalance}}</div>
+    <div class="ethereumInfo"><span class="header">Time : </span>{{ethereumTime}}</div>
+    {{> ethereumCoinBalanceChart}}
+  {{/with}}
+</template>
+
+<template name="ethereumCoinBalanceChart">
+  <div id="balance"></div>
+</template>

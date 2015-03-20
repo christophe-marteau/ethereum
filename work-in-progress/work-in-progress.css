@@ -1,0 +1,43 @@
+/* CSS declarations go here */
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+h1 {
+  text-align: center;
+}
+
+div.global {
+  display: table;
+  margin: 0px auto;
+  border-collapse: separate;
+  border-spacing: 5px;
+}
+
+div.cell {
+  display: table-cell;
+  background: #E6E6E6;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+span.header {
+  font-weight: bold;
+}
+
+div.ethereumInfo {
+  border: 1px solid black;
+  line-height: normal;
+  font-size: small;
+  background: #D8D8D8;
+}
+
+div.space {
+  padding: 5px;
+}
+
+svg circle {
+  fill: #663399;
+}
