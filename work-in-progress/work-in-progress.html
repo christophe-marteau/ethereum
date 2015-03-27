@@ -4,9 +4,14 @@
 
 <body>
   <h1>Hello World Ðapp</h1>
+<!--
   <div class="global">
     {{> ethereumClientBinded}}
   </div>
+  <div class="cell">
+    {{> ethereumCoinBalanceChart}}
+  </div>
+-->
 </body>
 
 <template name="ethereumInfo">
@@ -25,7 +30,6 @@
 </template>
 
 <template name="ethereumClientBinded">
-<!--
   <div class="cell">  
     <strong>Ethereum :</strong>
     {{> ethereumInfo}}
@@ -40,7 +44,6 @@
       <div class="ethereumInfo"><span class="header">Listen state : </span>Offline</div>
     {{/if}}
   </div>
--->
   {{#if isClientBinded}}
     <div class="cell">
       <strong>Balance :</strong>
@@ -65,7 +68,6 @@
 <!--    <div class="ethereumInfo"><span class="header">Coinbase address : </span>{{ethereumCoinBaseAddress}}</div> -->
     <div class="ethereumInfo"><span class="header">Balance : </span>{{ethereumCoinBalance}}</div>
     <div class="ethereumInfo"><span class="header">Time : </span>{{ethereumTime}}</div>
-    {{> ethereumCoinBalanceChart}}
   {{/with}}
 </template>
 

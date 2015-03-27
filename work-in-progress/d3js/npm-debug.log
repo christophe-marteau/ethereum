@@ -1,0 +1,244 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', '-g', 'd3' ]
+2 info using npm@1.4.21
+3 info using node@v0.10.29
+4 verbose cache add [ 'd3', null ]
+5 verbose cache add name=undefined spec="d3" args=["d3",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'd3',
+6 verbose parsed url   path: 'd3',
+6 verbose parsed url   href: 'd3' }
+7 silly lockFile 7cfd024b-d3 d3
+8 verbose lock d3 /home/cmarteau/.npm/7cfd024b-d3.lock
+9 silly lockFile 7cfd024b-d3 d3
+10 silly lockFile 7cfd024b-d3 d3
+11 verbose addNamed [ 'd3', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile 97977b46-d3 d3@
+14 verbose lock d3@ /home/cmarteau/.npm/97977b46-d3.lock
+15 silly addNameRange { name: 'd3', range: '*', hasData: false }
+16 verbose request where is /d3
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id 6afef66706437162
+19 verbose url raw /d3
+20 verbose url resolving [ 'https://registry.npmjs.org/', './d3' ]
+21 verbose url resolved https://registry.npmjs.org/d3
+22 verbose request where is https://registry.npmjs.org/d3
+23 info trying registry request attempt 1 at 15:43:32
+24 http GET https://registry.npmjs.org/d3
+25 http 200 https://registry.npmjs.org/d3
+26 silly registry.get cb [ 200,
+26 silly registry.get   { date: 'Thu, 26 Mar 2015 14:43:33 GMT',
+26 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+26 silly registry.get     etag: '"1PB1JMMQA3RVWEAPNT0IV8RJL"',
+26 silly registry.get     'content-type': 'application/json',
+26 silly registry.get     'cache-control': 'max-age=60',
+26 silly registry.get     'content-length': '107521',
+26 silly registry.get     'accept-ranges': 'bytes',
+26 silly registry.get     via: '1.1 varnish',
+26 silly registry.get     age: '0',
+26 silly registry.get     'x-served-by': 'cache-fra1223-FRA',
+26 silly registry.get     'x-cache': 'HIT',
+26 silly registry.get     'x-cache-hits': '1',
+26 silly registry.get     'x-timer': 'S1427381012.947105,VS0,VE175',
+26 silly registry.get     vary: 'Accept',
+26 silly registry.get     'keep-alive': 'timeout=10, max=50',
+26 silly registry.get     connection: 'Keep-Alive' } ]
+27 silly addNameRange number 2 { name: 'd3', range: '*', hasData: true }
+28 silly addNameRange versions [ 'd3',
+28 silly addNameRange   [ '1.29.5',
+28 silly addNameRange     '2.1.3',
+28 silly addNameRange     '2.2.1',
+28 silly addNameRange     '2.3.0',
+28 silly addNameRange     '2.3.2',
+28 silly addNameRange     '2.3.3',
+28 silly addNameRange     '2.3.4',
+28 silly addNameRange     '2.4.0',
+28 silly addNameRange     '2.4.1',
+28 silly addNameRange     '2.4.2',
+28 silly addNameRange     '2.5.1',
+28 silly addNameRange     '2.5.2',
+28 silly addNameRange     '2.6.0',
+28 silly addNameRange     '2.7.0',
+28 silly addNameRange     '2.7.2',
+28 silly addNameRange     '2.7.3',
+28 silly addNameRange     '2.7.4',
+28 silly addNameRange     '2.7.5',
+28 silly addNameRange     '2.8.0',
+28 silly addNameRange     '2.8.1',
+28 silly addNameRange     '2.9.0',
+28 silly addNameRange     '2.9.1',
+28 silly addNameRange     '2.9.2',
+28 silly addNameRange     '2.9.3',
+28 silly addNameRange     '2.9.4',
+28 silly addNameRange     '2.9.6',
+28 silly addNameRange     '2.9.7',
+28 silly addNameRange     '2.10.0',
+28 silly addNameRange     '2.10.1',
+28 silly addNameRange     '2.10.3',
+28 silly addNameRange     '3.0.0',
+28 silly addNameRange     '3.0.1',
+28 silly addNameRange     '3.0.2',
+28 silly addNameRange     '3.0.3',
+28 silly addNameRange     '3.0.4',
+28 silly addNameRange     '3.0.5',
+28 silly addNameRange     '3.0.6',
+28 silly addNameRange     '3.0.7',
+28 silly addNameRange     '3.0.8',
+28 silly addNameRange     '3.1.0',
+28 silly addNameRange     '3.1.1',
+28 silly addNameRange     '3.1.2',
+28 silly addNameRange     '3.1.3',
+28 silly addNameRange     '3.1.4',
+28 silly addNameRange     '3.1.5',
+28 silly addNameRange     '3.1.6',
+28 silly addNameRange     '3.1.7',
+28 silly addNameRange     '3.1.8',
+28 silly addNameRange     '3.1.9',
+28 silly addNameRange     '3.1.10',
+28 silly addNameRange     '3.2.0',
+28 silly addNameRange     '3.2.1',
+28 silly addNameRange     '3.2.2',
+28 silly addNameRange     '3.2.3',
+28 silly addNameRange     '3.2.4',
+28 silly addNameRange     '3.2.5',
+28 silly addNameRange     '3.2.6',
+28 silly addNameRange     '3.2.7',
+28 silly addNameRange     '3.2.8',
+28 silly addNameRange     '3.3.0',
+28 silly addNameRange     '3.3.1',
+28 silly addNameRange     '3.3.2',
+28 silly addNameRange     '3.3.3',
+28 silly addNameRange     '3.3.4',
+28 silly addNameRange     '3.3.5',
+28 silly addNameRange     '3.3.6',
+28 silly addNameRange     '3.3.7',
+28 silly addNameRange     '3.3.8',
+28 silly addNameRange     '3.3.9',
+28 silly addNameRange     '3.3.10',
+28 silly addNameRange     '3.3.11',
+28 silly addNameRange     '3.3.12',
+28 silly addNameRange     '3.3.13',
+28 silly addNameRange     '3.4.0',
+28 silly addNameRange     '3.4.1',
+28 silly addNameRange     '3.4.2',
+28 silly addNameRange     '3.4.3',
+28 silly addNameRange     '3.4.4',
+28 silly addNameRange     '3.4.5',
+28 silly addNameRange     '3.4.6',
+28 silly addNameRange     '3.4.7',
+28 silly addNameRange     '3.4.8',
+28 silly addNameRange     '3.4.9',
+28 silly addNameRange     '3.4.10',
+28 silly addNameRange     '3.4.11',
+28 silly addNameRange     '3.4.12',
+28 silly addNameRange     '3.4.13',
+28 silly addNameRange     '3.5.0',
+28 silly addNameRange     '3.5.1',
+28 silly addNameRange     '3.5.2',
+28 silly addNameRange     '3.5.3',
+28 silly addNameRange     '3.5.4',
+28 silly addNameRange     '3.5.5' ] ]
+29 verbose addNamed [ 'd3', '3.5.5' ]
+30 verbose addNamed [ '3.5.5', '3.5.5' ]
+31 silly lockFile 4144013f-d3-3-5-5 d3@3.5.5
+32 verbose lock d3@3.5.5 /home/cmarteau/.npm/4144013f-d3-3-5-5.lock
+33 silly lockFile c5011084-gistry-npmjs-org-d3-d3-3-5-5-tgz https://registry.npmjs.org/d3/-/d3-3.5.5.tgz
+34 verbose lock https://registry.npmjs.org/d3/-/d3-3.5.5.tgz /home/cmarteau/.npm/c5011084-gistry-npmjs-org-d3-d3-3-5-5-tgz.lock
+35 verbose addRemoteTarball [ 'https://registry.npmjs.org/d3/-/d3-3.5.5.tgz',
+35 verbose addRemoteTarball   'be1aba6a84fb6653283b3ebebb7f570e3bda187e' ]
+36 info retry fetch attempt 1 at 15:43:33
+37 verbose fetch to= /tmp/npm-6470-aa8mhaDH/registry.npmjs.org/d3/-/d3-3.5.5.tgz
+38 http GET https://registry.npmjs.org/d3/-/d3-3.5.5.tgz
+39 http 200 https://registry.npmjs.org/d3/-/d3-3.5.5.tgz
+40 silly lockFile c5011084-gistry-npmjs-org-d3-d3-3-5-5-tgz https://registry.npmjs.org/d3/-/d3-3.5.5.tgz
+41 silly lockFile c5011084-gistry-npmjs-org-d3-d3-3-5-5-tgz https://registry.npmjs.org/d3/-/d3-3.5.5.tgz
+42 silly lockFile 4144013f-d3-3-5-5 d3@3.5.5
+43 silly lockFile 4144013f-d3-3-5-5 d3@3.5.5
+44 silly lockFile 97977b46-d3 d3@
+45 silly lockFile 97977b46-d3 d3@
+46 silly resolved [ { name: 'd3',
+46 silly resolved     version: '3.5.5',
+46 silly resolved     description: 'A JavaScript visualization library for HTML and SVG.',
+46 silly resolved     keywords: [ 'dom', 'w3c', 'visualization', 'svg', 'animation', 'canvas' ],
+46 silly resolved     homepage: 'http://d3js.org',
+46 silly resolved     author: { name: 'Mike Bostock', url: 'http://bost.ocks.org/mike' },
+46 silly resolved     contributors: [ [Object] ],
+46 silly resolved     repository: { type: 'git', url: 'https://github.com/mbostock/d3.git' },
+46 silly resolved     main: 'index.js',
+46 silly resolved     browserify: 'd3.js',
+46 silly resolved     jspm:
+46 silly resolved      { main: 'd3',
+46 silly resolved        shim: [Object],
+46 silly resolved        files: [Object],
+46 silly resolved        buildConfig: [Object] },
+46 silly resolved     jam: { main: 'd3.js', shim: [Object] },
+46 silly resolved     spm: { main: 'd3.js' },
+46 silly resolved     devDependencies:
+46 silly resolved      { jsdom: '3',
+46 silly resolved        seedrandom: '2',
+46 silly resolved        smash: '0.0',
+46 silly resolved        'uglify-js': '2.4.16',
+46 silly resolved        vows: '0.8' },
+46 silly resolved     scripts: { test: 'vows; echo' },
+46 silly resolved     licenses: [ [Object] ],
+46 silly resolved     gitHead: '0aa17c772b4d30231312b91b4f5b8d4230379b16',
+46 silly resolved     bugs: { url: 'https://github.com/mbostock/d3/issues' },
+46 silly resolved     _id: 'd3@3.5.5',
+46 silly resolved     _shasum: 'be1aba6a84fb6653283b3ebebb7f570e3bda187e',
+46 silly resolved     _from: 'd3@',
+46 silly resolved     _npmVersion: '2.3.0',
+46 silly resolved     _nodeVersion: '0.10.35',
+46 silly resolved     _npmUser: { name: 'mbostock', email: 'mbostock@gmail.com' },
+46 silly resolved     maintainers: [ [Object], [Object] ],
+46 silly resolved     dist:
+46 silly resolved      { shasum: 'be1aba6a84fb6653283b3ebebb7f570e3bda187e',
+46 silly resolved        tarball: 'http://registry.npmjs.org/d3/-/d3-3.5.5.tgz' },
+46 silly resolved     directories: {},
+46 silly resolved     _resolved: 'https://registry.npmjs.org/d3/-/d3-3.5.5.tgz' } ]
+47 info install d3@3.5.5 into /usr/local/lib
+48 info installOne d3@3.5.5
+49 verbose lib/node_modules/d3 unbuild
+50 verbose tar unpack /home/cmarteau/.npm/d3/3.5.5/package.tgz
+51 silly lockFile 33a59d42-ar-usr-local-lib-node-modules-d3 tar:///usr/local/lib/node_modules/d3
+52 verbose lock tar:///usr/local/lib/node_modules/d3 /home/cmarteau/.npm/33a59d42-ar-usr-local-lib-node-modules-d3.lock
+53 silly lockFile f1deb2b5-marteau-npm-d3-3-5-5-package-tgz tar:///home/cmarteau/.npm/d3/3.5.5/package.tgz
+54 verbose lock tar:///home/cmarteau/.npm/d3/3.5.5/package.tgz /home/cmarteau/.npm/f1deb2b5-marteau-npm-d3-3-5-5-package-tgz.lock
+55 silly gunzTarPerm modes [ '755', '644' ]
+56 error Error: EACCES, mkdir '/usr/local/lib/node_modules'
+56 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules']
+56 error   errno: 3,
+56 error   code: 'EACCES',
+56 error   path: '/usr/local/lib/node_modules',
+56 error   fstream_type: 'Directory',
+56 error   fstream_path: '/usr/local/lib/node_modules/d3',
+56 error   fstream_class: 'DirWriter',
+56 error   fstream_stack:
+56 error    [ '/usr/lib/nodejs/fstream/lib/writer.js:171:23',
+56 error      '/usr/lib/nodejs/mkdirp/index.js:46:53',
+56 error      'Object.oncomplete (fs.js:107:15)' ] }
+57 error Please try running this command again as root/Administrator.
+58 error System Linux 3.16.0-4-amd64
+59 error command "/usr/bin/nodejs" "/usr/bin/npm" "install" "-g" "d3"
+60 error cwd /zpoolhome/cmarteau/d3js
+61 error node -v v0.10.29
+62 error npm -v 1.4.21
+63 error path /usr/local/lib/node_modules
+64 error fstream_path /usr/local/lib/node_modules/d3
+65 error fstream_type Directory
+66 error fstream_class DirWriter
+67 error code EACCES
+68 error errno 3
+69 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules'
+70 error fstream_stack /usr/lib/nodejs/fstream/lib/writer.js:171:23
+70 error fstream_stack /usr/lib/nodejs/mkdirp/index.js:46:53
+70 error fstream_stack Object.oncomplete (fs.js:107:15)
+71 verbose exit [ 3, true ]
