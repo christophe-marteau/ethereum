@@ -8,6 +8,7 @@ function debug( level, debugMessage ) {
 /*
  This function chech if a client is alive or not. It just check if we can post a 'null'
  request to an URL.
+ Checked with : https://github.com/ethereum/cpp-ethereum/wiki/Building-on-Ubuntu#start-your-client
  [in] clientURL : The client URL to check
  [return] true if connected to the client else false
 */
@@ -17,7 +18,7 @@ function isClientAlive( clientURL ) {
   var request = new XMLHttpRequest();
   request.open( "POST", clientURL, false );
   try {
-    request.send( null );
+    request.send( {"jsonrpc": "2.0","method": "eth_coinbase","params": null,"id": 1} );
   } catch( errorMessage ) {
     console.log( errorMessage );
     debug( 6, 'isClientAlive( ' + clientURL + ' ) = false' );
