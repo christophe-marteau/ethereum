@@ -68,7 +68,7 @@ function main() {
     ethereumNetworkInfo.push( { name: 'version', value: web3.version.network } );
     ethereumNetworkInfo.push( { name: 'listen', value: web3.net.listening } );
     ethereumNetworkInfo.push( { name: 'peer(s)', value: web3.net.peerCount } );
-//  ethereumEthInfo.push( { name: 'version', value: web3.version.ethereum } );
+    ethereumEthInfo.push( { name: 'version', value: web3.version.ethereum } );
     ethereumEthInfo.push( { name: 'address', value: web3.eth.coinbase } );
     ethereumEthInfo.push( { name: 'account(s)', value: web3.eth.accounts } );
     ethereumEthInfo.push( { name: 'gas price', value: web3.toBigNumber( web3.eth.gasPrice ).toString( 10 ) } );
@@ -88,9 +88,6 @@ function main() {
   displayMsg( 'Client', 'ethereumClientInfo', ethereumClientInfo ); 
   displayMsg( 'Network', 'ethereumNetworkInfo', ethereumNetworkInfo ); 
   displayMsg( 'Ethereum', 'ethereumEthInfo', ethereumEthInfo ); 
-/*
-  //console.log('web3.version.whisper : ' + web3.version.whisper); 
-  console.log('web3.eth.accounts : ' + web3.eth.accounts); 
-*/
+
   debug(9,'main','END main()');
 }
