@@ -52,8 +52,8 @@ function displayMsg( msgTitle, tagId, msgArray ) {
 function main() {
   debug( 9, 'main()' );
 
-  var web3 = require( 'ethereum.js' );
-  var clientUrl = 'http://localhost:8080';
+  var web3 = require( 'web3' );
+  var clientUrl = 'http://localhost:8545';
 
   var ethereumAppInfo = [ { name: 'api', value: web3.version.api } ];
   var ethereumClientInfo = [ { name: 'url', value: clientUrl } ];
@@ -70,10 +70,15 @@ function main() {
     ethereumNetworkInfo.push( { name: 'peer(s)', value: web3.net.peerCount } );
 //  ethereumEthInfo.push( { name: 'version', value: web3.version.ethereum } );
     ethereumEthInfo.push( { name: 'address', value: web3.eth.coinbase } );
+    ethereumEthInfo.push( { name: 'account(s)', value: web3.eth.accounts } );
     ethereumEthInfo.push( { name: 'gas price', value: web3.toBigNumber( web3.eth.gasPrice ).toString( 10 ) } );
     var balance = web3.eth.getBalance( web3.eth.coinbase );
-    ethereumEthInfo.push( { name: 'balance', value: web3.toBigNumber( balance ).toString( 10 ) } );
+    ethereumEthInfo.push( { name: 'balance (wei)', value: web3.toBigNumber( balance ).toString( 10 ) } );
+    ethereumEthInfo.push( { name: 'balance (ether)', value: web3.toBigNumber( balance ).dividedBy(1000000000000000000).toString( 10 ) } );
+    ethereumEthInfo.push( { name: 'balance (BTC)*', value: web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.0005).toString( 10 ) } );
+    ethereumEthInfo.push( { name: 'balance (USD$)**', value: web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.12156).toString( 10 ) } );
     ethereumEthInfo.push( { name: 'mining', value: web3.eth.mining } );
+    ethereumEthInfo.push( { name: 'hashrate', value: web3.eth.hashrate } );
 
   } else {
     ethereumClientInfo.push( {name: 'state', value: 'dead' } );
