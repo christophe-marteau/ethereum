@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Plugin: XSLT</title>
+		<script type="text/javascript" src="../../../ample/runtime.js"></script>
+		<script type="text/javascript" src="../../../ample/languages/xhtml/xhtml.js"></script>
+		<script type="text/javascript" src="../../../ample/plugins/xslt/xslt.js"></script>
+	</head>
+	<body>
+		<script type="application/ample+xml">
+			<div>
+				Loading...
+			</div>
+			<br />
+			<div>
+				Loading...
+			</div>
+		</script>
+		<script>
+		ample.ready(function() {
+			ample.query("div").xslt("data.xml", "stylesheet.xsl");
+		})
+		</script>
+	</body>
+</html>

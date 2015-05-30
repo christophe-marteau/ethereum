@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../stylesheets/page.xsl"?>
+<class name="Locale">
+	<abstract>
+		<locale>
+			Provides APIs for localizing applications.
+			You can set or change current locale in your application by setting <b>locale</b> configuration property.
+		</locale>
+	</abstract>
+	<examples>
+		<example>
+			<description>
+				<locale>
+					Setting application locale to South-African Afrikaans language:
+				</locale>
+			</description>
+			<code type="text/javascript"><![CDATA[ample.config("locale", "af-ZA");
+]]></code>
+		</example>
+	</examples>
+	<members>
+		<properties>
+			<property name="culture" type="Object" readonly="true">
+				<description>
+					Currently selected culture object.
+				</description>
+			</property>
+			<property name="cultures" type="Object" readonly="true">
+				<description>
+					A mapping of culture codes to culture objects.
+				</description>
+			</property>
+		</properties>
+		<methods>
+			<method name="addCultureInfo" type="Void">
+				<arguments>
+					<argument name="culture" type="String">
+						<description>
+							<locale>
+								Name of culture being added.
+							</locale>
+						</description>
+					</argument>
+					<argument name="baseCulture" type="String">
+						<description>
+							<locale>
+								Name of culture to extend on.
+							</locale>
+						</description>
+					</argument>
+					<argument name="cultureInfo" type="Object">
+						<description>
+							<locale>
+								Culture object.
+							</locale>
+						</description>
+					</argument>
+				</arguments>
+				<arguments>
+					<argument name="culture" type="String">
+						<description>
+							<locale>
+								Name of culture being added.
+							</locale>
+						</description>
+					</argument>
+					<argument name="cultureInfo" type="Object">
+						<description>
+							<locale>
+								Culture object.
+							</locale>
+						</description>
+					</argument>
+				</arguments>
+				<description>
+					<locale>
+						Adds new culture information. If baseCulture parameter provided, new culture will inherit its information.
+					</locale>
+				</description>
+			</method>
+			<method name="format" type="String">
+				<arguments>
+					<argument name="value" type="Variant" required="true">
+						<description>
+							<locale>
+								Date or number value to be formatted.
+							</locale>
+						</description>
+					</argument>
+					<argument name="format" type="String">
+						<description>
+							<locale>
+								Format string.
+							</locale>
+						</description>
+					</argument>
+					<argument name="culture" type="String" required="false">
+						<description>
+							<locale>
+								Culture identifier.
+							</locale>
+						</description>
+					</argument>
+				</arguments>
+				<description>
+					<locale>
+						Formats a date or number according to the given format string and/or the given culture
+					</locale>
+				</description>
+			</method>
+			<method name="localize" type="String">
+				<arguments>
+					<argument name="key" type="String" required="true">
+						<description>
+							<locale>
+								Key.
+							</locale>
+						</description>
+					</argument>
+					<argument name="culture" type="String" required="false">
+						<description>
+							<locale>
+								Culture name.
+							</locale>
+						</description>
+					</argument>
+				</arguments>
+				<description>
+					<locale>
+						Gets localized text for key.
+					</locale>
+				</description>
+			</method>
+			<method name="parseDate" type="Date">
+				<arguments>
+					<argument name="value" type="String" required="true">
+						<description>
+							<locale>
+								Value to be parsed.
+							</locale>
+						</description>
+					</argument>
+					<argument name="formats" type="Variant">
+						<description>
+							<locale>
+								Format string.
+							</locale>
+						</description>
+					</argument>
+					<argument name="culture" type="String" required="false">
+						<description>
+							<locale>
+								Culture name.
+							</locale>
+						</description>
+					</argument>
+				</arguments>
+				<description>
+					<locale>
+						Parses a string representing a date into a JavaScript Date object, taking into account the given possible formats.
+					</locale>
+				</description>
+			</method>
+			<method name="parseInt" type="Number">
+				<arguments>
+					<argument name="value" type="String" required="true">
+						<description>
+							<locale>
+								Value to be parsed.
+							</locale>
+						</description>
+					</argument>
+					<argument name="radix" type="Number" required="false">
+						<description>
+							<locale>
+								Radix (10 by default).
+							</locale>
+						</description>
+					</argument>
+					<argument name="culture" type="String" required="false">
+						<description>
+							<locale>
+								Culture name.
+							</locale>
+						</description>
+					</argument>
+				</arguments>
+				<description>
+					<locale>
+						Parses a string representing a whole number in the given radix (10 by default).
+					</locale>
+				</description>
+			</method>
+			<method name="parseFloat" type="Number">
+				<arguments>
+					<argument name="value" type="String" required="true">
+						<description>
+							<locale>
+								Value to be parsed.
+							</locale>
+						</description>
+					</argument>
+					<argument name="radix" type="Number" required="false">
+						<description>
+							<locale>
+								Radix (10 by default).
+							</locale>
+						</description>
+					</argument>
+					<argument name="culture" type="String" required="false">
+						<description>
+							<locale>
+								Culture name.
+							</locale>
+						</description>
+					</argument>
+				</arguments>
+				<description>
+					<locale>
+						Parses a string representing a floating point number in the given radix (10 by default).
+					</locale>
+				</description>
+			</method>
+		</methods>
+	</members>
+	<remarks>
+		<remark>
+			<locale>
+				<p>
+					<b>Date formats.</b>
+					When more specific control is needed over the formatting, you may create custom formats using custom tokens.
+				</p>
+				<ul>
+					<li>f - Long Date, Short Time</li>
+					<li>F - Long Date, Long Time</li>
+					<li>t - Short Time</li>
+					<li>T - Long Time</li>
+					<li>d - Short Date</li>
+					<li>D - Long Date</li>
+					<li>Y - Month/Year</li>
+					<li>M - Month/Day</li>
+					<li>S - Sortable date format "yyyy-MM-ddTHH:mm:ss"</li>
+				</ul>
+				<p>
+					<b>Number formats.</b>
+					For number formats you can also use number next to format identifier to give output string length.
+					For example ample.locale.format(0.12345, "p4") will output 12.3450 % in default en-US locale.
+				</p>
+				<ul>
+					<li>n - number</li>
+					<li>d - decimal digits</li>
+					<li>p - percentage</li>
+					<li>c - currency</li>
+				</ul>
+			</locale>
+		</remark>
+	</remarks>
+</class>

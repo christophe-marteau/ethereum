@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../../../stylesheets/page.xsl"?>
+<article>
+	<title>XML Schema 1.1</title>
+	<abstract>
+		<locale>
+			XML Schema Definition Language offers facilities for describing the structure and constraining the contents of XML documents.
+		</locale>
+	</abstract>
+	<content>
+		<section>
+			<title>
+				<locale>
+					Namespace URI
+				</locale>
+				<locale xml:lang="ru">
+					Пространство имен
+				</locale>
+			</title>
+			<content>
+				<locale>
+					XML Schema 1.1 defines a namespaces associated with the URI <uri>http://www.w3.org/2001/XMLSchema</uri>.
+				</locale>
+				<locale xml:lang="ru">
+					Пространство имен XML Schema 1.1 определяется URI <uri>http://www.w3.org/2001/XMLSchema</uri>
+				</locale>
+			</content>
+		</section>
+		<section>
+			<title>
+				<locale>
+					Ample SDK implementation details
+				</locale>
+				<locale xml:lang="ru">
+					Реализация в Ample SDK
+				</locale>
+			</title>
+			<content>
+				<locale>
+					Ample SDK currently only supports <link href="http://www.w3.org/TR/xmlschema11-2/">XML Schema 1.1 Part 2: Datatypes</link> module of the specification.
+				</locale>
+			</content>
+		</section>
+	</content>
+	<seealso>
+		<link href="http://www.w3.org/TR/xmlschema11-1/">XML Schema Part 1: Structures (W3C)</link>
+		<link href="http://www.w3.org/TR/xmlschema11-2/">XML Schema Part 2: Datatypes (W3C)</link>
+	</seealso>
+</article>

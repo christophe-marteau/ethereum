@@ -30,7 +30,6 @@ function isClientAlive( clientURL ) {
   return( true );
 }
 
-
 /*
  This function print a list of element into an html tag'
  [in] msgTitle : The title for the element list 
@@ -41,11 +40,9 @@ function displayMsg( msgTitle, tagId, msgArray ) {
   debug( 9, 'BEGIN displayMsg()' );
   debug( 8, 'displayMsg( ' + msgTitle + ', ' + tagId + ', ' + JSON.stringify( msgArray ) + ' )' );
   var htmlOutput = '<p class="msgTitle"><strong>' + msgTitle + '</strong></p>';
-  htmlOutput += '<table>';
   for( var i = 0; i < msgArray.length; i++ ) {  
-    htmlOutput += '<tr><td class="msgBody"><strong>' + msgArray[i].name + ' </strong></td><td><strong> : </strong>' + msgArray[i].value + '</td></tr>';
+    htmlOutput += '<p class="msgBody"><strong>' + msgArray[i].name + ' : </strong>' + msgArray[i].value + '</p>';
   }
-  htmlOutput += '</table>';
   debug( 8, 'displayMsg( ' + msgTitle + ', ' + tagId + ', ' + JSON.stringify( msgArray ) + ' ) = "' + htmlOutput + '"' );
   document.getElementById( tagId ).innerHTML = htmlOutput;
   debug( 9, 'END displayMsg()' );
@@ -55,44 +52,50 @@ function index() {
   debug( 9, 'BEGIN index()' );
 
   var web3 = require( 'web3' );
-  var clientUrl = 'http://localhost:8545';
+  var clientUrl = 'http://localhost:8546';
   
   web3.setProvider( new web3.providers.HttpProvider( clientUrl ) );
 
-  var ethereumEthInfo = [];
-  var ethereumSendTransaction = [];
-
   if( isClientAlive( clientUrl ) ) {
-    ethereumEthInfo.push( { name: 'address', value: web3.eth.coinbase } );
-  //  ethereumEthInfo.push( { name: 'account(s)', value: web3.eth.accounts } );
-    ethereumEthInfo.push( { name: 'gas price', value: web3.toBigNumber( web3.eth.gasPrice ).toString( 10 ) } );
-    var balance = web3.eth.getBalance( web3.eth.coinbase );
-    ethereumEthInfo.push( { name: 'balance (wei)', value: web3.toBigNumber( balance ).toString( 10 ) } );
-    ethereumEthInfo.push( { name: 'balance (ether)', value: web3.toBigNumber( balance ).dividedBy(1000000000000000000).toString( 10 ) } );
-    ethereumEthInfo.push( { name: 'balance (BTC)*', value: web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.0005).toString( 10 ) } );
-    ethereumEthInfo.push( { name: 'balance (USD$)**', value: web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.12156).toString( 10 ) } );
-    ethereumEthInfo.push( { name: 'Block Number', value: web3.eth.blockNumber } );
-    ethereumEthInfo.push( { name: 'Block (Default)', value: web3.eth.defaultBlock} );
-    ethereumEthInfo.push( { name: 'Block (pending)', value: web3.eth.getBlock('pending').number} );
-    ethereumEthInfo.push( { name: 'Storage At', value: web3.eth.getStorageAt( web3.eth.coinbase ) } );
-  
+    var bodyHTMLOutput = '';
+    var accountsHTMLOutput = '<tr class="border"><td class="border"></td><td class="border"></td></tr>'
+    for ( var a = 0; a < web3.eth.accounts.length; a++ ) {
+      var balance = web3.eth.getBalance( web3.eth.accounts[a] );
+      accountsHTMLOutput += '<tr><td class="msgBody"><strong>Address</strong></td><td><strong> : </strong>' + web3.eth.accounts[a] + '</td></tr>' +
+                            '<tr><td class="msgBody"><strong>Balance (wei)</strong></td><td><strong> : </strong>' + web3.toBigNumber( balance ).toString( 10 ) + '</td></tr>' +
+                            '<tr><td class="msgBody"><strong>Balance (ether)</strong></td><td><strong> : </strong>' + web3.toBigNumber( balance ).dividedBy(1000000000000000000).toString( 10 ) + '</td></tr>' +
+                            '<tr><td class="msgBody"><strong>balance (BTC)*</strong></td><td><strong> : </strong>' + web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.0005).toString( 10 ) + '</td></tr>' +
+                            '<tr><td class="msgBody"><strong>Balance (USD$)**</strong></td><td><strong> : </strong>' + web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.12156).toString( 10 ) + '</td></tr>' +
+                            '<tr class="border"><td class="border"></td><td class="border"></td></tr>';
+    }
+    
+    bodyHTMLOutput = '<p class="msgTitle"><strong>Ethereum</strong></p>' +
+                     '<table>' +
+                     '  <tr><td class="msgBody"><strong>Default address</strong></td><td><strong> : </strong>' + web3.eth.coinbase + '</td></tr>' +
+                     '  <tr><td class="msgBody"><strong>Fee (wei)</strong></td><td><strong> : </strong>' + web3.eth.gasPrice + '</td></tr>' +
+                     accountsHTMLOutput +
+                     '  <tr><td class="msgBody"><strong>Default Block</strong></td><td><strong> : </strong>' + web3.eth.defaultBlock + '</td></tr>' +
+                     '  <tr><td class="msgBody"><strong>Current Block</strong></td><td><strong> : </strong>' + web3.eth.blockNumber + '</td></tr>' +
+                     '  <tr><td class="msgBody"><strong>Pending Block</strong></td><td><strong> : </strong>' + web3.eth.getBlock('pending').number + '</td></tr>' +
+                     '</table>';
                         
   } else {
-    ethereumEthInfo.push( { name: 'Wallet', value: 'Offline' } );
+    bodyHTMLOutput = '<p class="msgTitle"><strong>Ethereum</strong></p>' +
+                     '<table>' +
+                     '  <tr><td class="msgBody"><strong>Wallet is offline</strong></td></tr>' +
+                     '</table>';
   }
-  displayMsg( 'Ethereum', 'ethereumEthInfo', ethereumEthInfo ); 
-  
-  ethereumSendTransaction.push( { id: 'from',  name: 'Sender address', type: 'text', value: web3.eth.accounts, list: 'yes' } ); // default
-  ethereumSendTransaction.push( { id: 'to', name: 'Recipient address', type: 'text', value: '0xd825bd075a47d7febaff2dabce942b4aabedfef5' } );
-  ethereumSendTransaction.push( { id: 'cost', name: 'Cost (wei)', type: 'text', value: '2000000000000000000' } ); // 2 ether
-  ethereumSendTransaction.push( { id: 'fee', name: 'Fee (wei)', type: 'text', value: '1000000000000000000' } ); // 1 ether
-  ethereumSendTransaction.push( { id: 'send', name: '', type: 'submit', value: 'Send' } ); // 1 ether
+  document.getElementById( 'ethereumEthInfo' ).innerHTML = bodyHTMLOutput;
 
   senderHTMLOutput = '<datalist id="senderAddressList">';
   for ( var sal = 0; sal < web3.eth.accounts.length; sal++ ) {
     senderHTMLOutput += '<option value="' + web3.eth.accounts[sal]+ '">';
   }
   senderHTMLOutput += '</datalist>';
+
+  recipientHTMLOutput = '<datalist id="recipientAddressList">' +
+                        '  <option value="0x01a186954e7c28e43b0c5b3e23627cfd735e6125"' +
+                        '</datalist>';
 
   if ( ! web3.eth.defaultAccount ) {
     web3.eth.defaultAccount = web3.eth.coinbase;
@@ -104,30 +107,31 @@ function index() {
                            '    <tr>' + 
                            '      <td class="header"><strong>Sender address</strong></td>' +
                            '      <td>' +
-                           '        <input size="40" list="senderAddressList" id="from" value="' + web3.eth.defaultAccount + '">' +
+                           '        <input size="45" list="senderAddressList" id="from" value="' + web3.eth.defaultAccount + '" required>' +
                            senderHTMLOutput +
                            '      </td>' +
                            '    </tr>' +
                            '    <tr>' + 
                            '      <td class="header"><strong>Recipient address</strong></td>' +
                            '      <td>' +
-                           '        <input size="40" id="to" type="text" value="0x01a186954e7c28e43b0c5b3e23627cfd735e6125">' +
+                           '        <input size="45" list="recipientAddressList" id="to" value="0x01a186954e7c28e43b0c5b3e23627cfd735e6125" required>' +
+                           recipientHTMLOutput +
                            '      </td>' +
                            '    </tr>' +
                            '    <tr>' + 
                            '      <td class="header"><strong>Cost (wei)</strong></td>' +
                            '      <td>' +
-                           '        <input size="40" id="cost" type="text" value="2000000000000000000">' +
+                           '        <input size="45" id="cost" type="text" value="2000000000000000000" required>' +
                            '      </td>' +
                            '    </tr>' +
                            '    <tr>' + 
                            '      <td class="header"><strong>Fee (wei)</strong></td>' +
                            '      <td>' +
-                           '        <input size="40" id="fee" type="text" value="1000000000000000000">' +
+                           '        <input size="45" id="fee" type="text" value="1000000000000000000" required>' +
                            '      </td>' +
                            '    </tr>' +
                            '  </table>' +
-                           '  <input size="40" id="Send" type="submit" value="Send">' +
+                           '  <input id="Send" type="submit" value="Send">' +
                            '</form>';
 
   document.getElementById( 'ethereumSendTransaction' ).innerHTML = sendFormHTMLOutput;
@@ -144,7 +148,15 @@ function sendEther() {
             to: document.getElementById('to').value,
             value: document.getElementById('cost').value };
   console.log( tData );
-  web3.eth.sendTransaction( tData );
+
+  web3.eth.sendTransaction( tData, function( transactionError, transactionAddress ) {
+    if ( transactionError ) {
+      window.alert( transactionError );
+    } else {
+      window.alert( transactionAddress );
+    }
+  });
+
   debug( 9, 'END sendEther()' );
 }
 

@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<xul:page
+	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<!-- Main commands -->
+	<xul:commandset>
+		<xul:command id="cmd_navigate_messages" oncommand="ample.query('#workspace').attr('selectedIndex', 0)"/>
+		<xul:command id="cmd_navigate_message" oncommand="ample.query('#workspace').attr('selectedIndex', 1)"/>
+		<xul:command id="cmd_navigate_contacts" oncommand="ample.query('#workspace').attr('selectedIndex', 2)"/>
+		<xul:command id="cmd_navigate_settings" oncommand="ample.query('#settings')[0].showModal()"/>
+	</xul:commandset>
+	<!-- Main broadcasters -->
+	<xul:broadcasterset>
+		<xul:broadcaster id="brd_message_selected" disabled="true" />
+	</xul:broadcasterset>
+	<!--  -->
+	<xul:menubar>
+		<xul:menu label="File">
+			<xul:menupopup>
+				<xul:menuitem label="Work offline"/>
+				<xul:menuseparator />
+				<xul:menuitem label="Print Preview"/>
+				<xul:menuitem label="Print.."/>
+				<xul:menuseparator />
+				<xul:menuitem label="Exit"/>
+			</xul:menupopup>
+		</xul:menu>
+		<xul:menu label="Tools">
+			<xul:menupopup>
+				<xul:menuitem label="Address Book..."/>
+				<xul:menuitem label="Options..."/>
+			</xul:menupopup>
+		</xul:menu>
+		<xul:menu label="Help">
+			<xul:menupopup>
+				<xul:menuitem label="Mail Mock Help" />
+				<xul:menuseparator />
+				<xul:menuitem label="About Mail Mock" />
+			</xul:menupopup>
+		</xul:menu>
+	</xul:menubar>
+	<!-- Toolbar -->
+	<xul:toolbar>
+		<xul:toolbarbutton label="Settings" command="cmd_navigate_settings"/>
+		<xul:toolbarbutton label="Contacts" command="cmd_navigate_contacts"/>
+		<xul:toolbarbutton label="Messages" command="cmd_navigate_messages"/>
+	</xul:toolbar>
+	<!--  -->
+	<xul:hbox flex="1" width="100%">
+		<xul:vbox width="220" minwidth="100" maxwidth="300">
+			<xul:toolbar>
+				<xul:toolbarbutton label="Compose Mail" command="cmd_navigate_message"/>
+			</xul:toolbar>
+			<xul:tree flex="1">
+				<xul:treecols>
+					<xul:treecol label="Folders" width="180" primary="true"/>
+				</xul:treecols>
+				<xul:treebody>
+					<xul:treechildren id="folders-system">
+						<xul:treeitem>
+							<xul:treerow>
+								<xul:treecell label="Inbox" />
+							</xul:treerow>
+						</xul:treeitem>
+						<xul:treeitem>
+							<xul:treerow>
+								<xul:treecell label="Starred" />
+							</xul:treerow>
+						</xul:treeitem>
+						<xul:treeitem>
+							<xul:treerow>
+								<xul:treecell label="All Mail" />
+							</xul:treerow>
+						</xul:treeitem>
+						<xul:treeitem>
+							<xul:treerow>
+								<xul:treecell label="Drafts" />
+							</xul:treerow>
+						</xul:treeitem>
+						<xul:treeitem>
+							<xul:treerow>
+								<xul:treecell label="Sent Mail" />
+							</xul:treerow>
+						</xul:treeitem>
+						<xul:treeitem>
+							<xul:treerow>
+								<xul:treecell label="Spam" />
+							</xul:treerow>
+						</xul:treeitem>
+						<xul:treeitem container="true" open="true">
+							<xul:treerow>
+								<xul:treecell label="My Folders" />
+							</xul:treerow>
+							<xul:treechildren id="folders-custom"/>
+						</xul:treeitem>
+					</xul:treechildren>
+				</xul:treebody>
+			</xul:tree>
+		</xul:vbox>
+		<xul:splitter />
+		<xul:deck id="workspace" flex="1">
+			<xi:include href="modules/messages.xml" />
+			<xi:include href="modules/message.xml" />
+			<xi:include href="modules/contacts.xml" />
+		</xul:deck>
+	</xul:hbox>
+</xul:page>
