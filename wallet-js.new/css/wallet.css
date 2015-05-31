@@ -1,0 +1,92 @@
+/* CSS declarations go here */
+
+tr.border {
+  border: 1px solid black;
+}
+td.border {
+  border: 1px solid black;
+}
+
+p.menu {
+  margin: 0px; 
+}
+
+div.cellMenu:hover {
+    background : #D8D8D8 ;
+}
+
+div.menu {
+  display: table;
+  padding: 5px 10px;
+  background:#F2F2F2 ;
+  border-radius: 15px;
+  width: 500px;
+}
+
+div.cellMenu {
+  display: table-cell;
+  background:#BDBDBD ;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+div.cellMenu#active {
+  display: table-cell;
+  background: #D8D8D8 ;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+p.msgBody {
+  margin: 0px;
+}
+p.msgTitle {
+  margin: 2px 0;
+  border-bottom : 1px solid #9EA0A1;
+}
+
+h1 {
+  text-align: center;
+}
+
+div.global {
+  display: table;
+  margin: 0px auto;
+}
+
+div.app {
+  display: table;
+  background: #F2F2F2;
+  padding: 10px;
+  border-radius: 15px;
+  width: 500px;
+}
+
+div.row {
+  display: table-row;
+}
+
+div.cell {
+  display: table-cell;
+  background: #E6E6E6;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+div.space {
+  padding: 5px;
+}
+
+
+ul.footnote {
+  font-size: smaller;
+}
+
+td.header {
+  text-align: right;
+}
