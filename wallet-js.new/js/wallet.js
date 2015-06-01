@@ -48,28 +48,35 @@ function displayMsg( msgTitle, tagId, msgArray ) {
   debug( 9, 'END displayMsg()' );
 }
 
-
-function genMenu( menuActive, menuData ) {
+/*
+ This function generate a HTML output making clickable menu tab'
+ [in] activeMenu : The active tab 
+ [in] menuData : The array containing menu data ( id: "<menu Id>" display: "<Menu name displayed>" )
+ [return] The HTML output for ethe menu
+*/
+function genMenu( activeMenu, menuData ) {
   debug( 9, 'BEGIN  genMenu()' );
-  debug( 8, 'genMenu( ' + menuActive + ', ' + JSON.stringify( menuData ) + ' )' );
+  debug( 8, 'genMenu( ' + activeMenu + ', ' + JSON.stringify( menuData ) + ' )' );
   
   var menuHTMLOutput = '<div class="menu">';
   var state = '';
 
   for( var i = 0; i < menuData.length; i++ ) {
-    if ( menuActive == menuData[i].id ) {
+    if ( activeMenu == menuData[i].id ) {
       state = 'active';
     } else {
       state = 'inactive';
     }
     menuHTMLOutput += '<div class="cellMenu" id="' + state + '">' +
-                      '  <p class="menu"  id="' + menuData[i].id + '" onclick=\'index( "' + menuData[i].id + '" )\'>' + menuData[i].display+ '</p>' +
+                      '  <p class="menu"  id="' + menuData[i].id + '" onclick=\'index( "' + menuData[i].id + '" )\'>' + 
+                           menuData[i].display + 
+                      '  </p>' +
                       '</div>';
     
   }
   menuHTMLOutput += '</div>';
  
-  debug( 8, 'genMenu( ' + menuActive + ', ' + JSON.stringify( menuData ) + ' ) = "' + menuHTMLOutput + '"' );
+  debug( 8, 'genMenu( ' + activeMenu + ', ' + JSON.stringify( menuData ) + ' ) = "' + menuHTMLOutput + '"' );
   debug( 9, 'END genMenu()' );
   return( menuHTMLOutput ) 
 }
@@ -80,6 +87,8 @@ function index( menuId ) {
 
   var menuData = [];
   menuData.push( { id: 'home', display: 'Home' } );
+  menuData.push( { id: 'accounts', display: 'Accounts' } );
+  menuData.push( { id: 'send', display: 'Send' } );
   menuData.push( { id: 'about', display: 'About' } );
 
   var bodyHTMLOutput = '';
@@ -87,7 +96,22 @@ function index( menuId ) {
   
   bodyHTMLOutput += genMenu( menuId, menuData );
 
-  bodyHTMLOutput += menuId;
+  switch( menuId ) {
+    case 'home' :
+        bodyHTMLOutput += 'HOME';
+        break;
+    case 'accounts':
+        bodyHTMLOutput += 'ACCOUNTS';
+        break;
+    case 'send' :
+        bodyHTMLOutput += 'SEND';
+        break;
+    case 'about':
+        bodyHTMLOutput += 'ABOUT';
+        break;
+    default:
+        bodyHTMLOutput += 'Menu default content. Should never happend ....';
+  }
 
   document.getElementById( 'myApp' ).innerHTML = bodyHTMLOutput;
   debug( 9, 'END index' );

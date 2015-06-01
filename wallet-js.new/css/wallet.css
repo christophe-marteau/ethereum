@@ -11,7 +11,7 @@ p.menu {
   margin: 0px; 
 }
 
-div.cellMenu:hover {
+div.cellMenu#inactive:hover {
     background : #D8D8D8 ;
 }
 
@@ -21,13 +21,15 @@ div.menu {
   background:#F2F2F2 ;
   border-radius: 15px;
   width: 500px;
+  table-layout: fixed;
 }
 
-div.cellMenu {
+div.cellMenu#inactive {
   display: table-cell;
   background:#BDBDBD ;
   padding: 10px;
   border-radius: 15px;
+  width: 100%;
 }
 
 div.cellMenu#active {
@@ -35,6 +37,7 @@ div.cellMenu#active {
   background: #D8D8D8 ;
   padding: 10px;
   border-radius: 15px;
+  width: 100%;
 }
 
 body {
