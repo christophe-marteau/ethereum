@@ -146,7 +146,7 @@ function setDefaultAccountAdress( formId, elementId ) {
 function resetSettings( formId ) {
   debug( 1, 'BEGIN resetSettings()' );
   resetForm( formId );
-  if (confirm("Are you sure to clean all Settings ?") == true) {
+  if ( window.confirm( 'Are you sure to reset all Settings ?' ) == true ) {
     localStorage.clear();
   }
   debug( 1, 'END resetSettings()' );
@@ -377,7 +377,12 @@ function main( menuId ) {
           var resetSettingsFormData = [];
           resetSettingsFormData.push( { id: 'resetSettingsSubmit', type: 'submit', value: 'Reset all settings' } );
           bodyHTMLOutput += genForm( 'resetSettingsForm', 'Reset all settings', resetSettingsFormData, 'resetSettings( "resetSettingsForm" )' );
-
+          if ( DEBUG > 0 ) {
+            var ethereumUnitTestData = [];
+            ethereumUnitTestData.push( { name: 'Unit test', value: '<a href="unitTest.html">Q-Unit</a>' } );
+ 
+            bodyHTMLOutput += genTable( "Unit Test", ethereumUnitTestData );
+          }
           break;
         default:
           bodyHTMLOutput += genError( 'Menu default content. Should never happend ....' );
