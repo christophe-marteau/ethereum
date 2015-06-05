@@ -1,4 +1,4 @@
-var DEBUG = 0;
+var DEBUG = 9;
 
 /* This function display a debug message in the console
    [in] level : The debug level
@@ -14,11 +14,16 @@ function debug( level, debugMessage ) {
    [in] errorMessage : The message to display
 */
 function genError( errorMessage ) {
+
+  if ( ( errorMessage === undefined ) || ( errorMessage == '' ) ) {
+    errorMessage = 'Undefined error';
+  }
+
   return( '<table>' +
-          '  <tr>' +
-          '    <td><img class="error" src="images/error.png" alt="Error icon"></td>' +
-          '    <td><p class=error>' + errorMessage + '</p></td>' +
-          '  </tr>' +
+            '<tr>' +
+              '<td><img class="error" src="images/error.png" alt="Error icon"></td>' +
+              '<td><p class=error>' + errorMessage + '</p></td>' +
+            '</tr>' +
           '</table>' );
 }
 
