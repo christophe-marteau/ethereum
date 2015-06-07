@@ -37,19 +37,37 @@ function genError( errorMessage ) {
 function isClientAlive( clientURL ) {
   debug( 9, 'END isClientAlive()' );
   debug( 6, 'isClientAlive( ' + clientURL + ' )' );
-  var request = new XMLHttpRequest();
-  request.open( "POST", clientURL, false );
-  try {
-    request.send( {"jsonrpc": "2.0","method": "eth_coinbase","params": null,"id": 1} );
-  } catch( errorMessage ) {
-    console.log( errorMessage );
-    debug( 6, 'isClientAlive( ' + clientURL + ' ) = false' );
+
+  // IP : regexlib.com -> regexp_id=32
+  // hostname : regexlib.com -> regexp_id=391 + without domain name 
+  // port : regexlib.com -> regexp_id=1236
+
+  var clientURLValidPattern = /^http:\/\/(([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+([a-zA-Z]{2,6})?|[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?|(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])):(0|([1-9]\d{0,3}|[1-5]\d{4}|[6][0-5][0-5]([0-2]\d|[3][0-5])))$/;
+  if ( clientURLValidPattern.test( clientURL ) ) {
+    var request = new XMLHttpRequest();
+    try {
+      request.open( "POST", clientURL, false );
+      try {
+        debug( 7, JSON.stringify( request ) );
+        request.send( {"jsonrpc": "2.0","method": "eth_coinbase","params": null,"id": 1} );
+      } catch( errorMessage ) {
+        debug( 1, 'Send : ' + errorMessage );
+        debug( 6, 'isClientAlive( ' + clientURL + ' ) = false' );
+        debug( 9, 'END isClientAlive()' );
+        return( false );
+      }
+    } catch( errorMessage ) {
+      debug( 1, 'Open : ' + errorMessage );
+      debug( 6, 'isClientAlive( ' + clientURL + ' ) = false' );
+      debug( 9, 'END isClientAlive()' );
+      return( false );
+    }
+    debug( 6, 'isClientAlive( ' + clientURL + ' ) = true' );
     debug( 9, 'END isClientAlive()' );
-    return( false );
+    return( true );
+  } else {
+    return( undefined );
   }
-  debug( 6, 'isClientAlive( ' + clientURL + ' ) = true' );
-  debug( 9, 'END isClientAlive()' );
-  return( true );
 }
 
 /*
@@ -65,10 +83,10 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
   debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' )' );
  
   var formHTMLOutput = '<div class="row">' +
-                        '  <div class="cell">' +
-                        '    <p class="formTitle"><strong>' + formTitle + '</strong></p>' +
-                        '    <form method="POST" id="' + formId + '" onsubmit=\'' + formSubmitFunction + '\' >' +
-                        '      <table>';
+                         '<div class="cell">' +
+                           '<p class="formTitle"><strong>' + formTitle + '</strong></p>' +
+                             '<form method="POST" id="' + formId + '" onsubmit=\'' + formSubmitFunction + '\' >' +
+                               '<table>';
 
   for( var i = 0; i < formData.length; i++ ) {  
     switch( formData[i].type ) {
@@ -96,8 +114,8 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
         selectHTMLOutput += '</select>';
 
         formHTMLOutput += '<tr>' +
-                          '  <td class="formDataHeader"><strong>' + formData[i].name + '</strong></td>' + 
-                          '  <td class="formDataContent"><strong>: </strong> ' + selectHTMLOutput + '  </td>' + 
+                            '<td class="formDataHeader"><strong>' + formData[i].name + '</strong></td>' + 
+                            '<td class="formDataContent"><strong>: </strong> ' + selectHTMLOutput + '  </td>' + 
                           '</tr>';
         break;
       case 'text' :
@@ -108,9 +126,9 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
     }
   }
   
-  formHTMLOutput += '      </table>' +
-                    '    </form>' + 
-                    '  </div>' +
+  formHTMLOutput +=       '</table>' +
+                        '</form>' + 
+                      '</div>' +
                     '</div>' + 
                     '<div class="space"></div>'; 
   
@@ -292,112 +310,123 @@ function main( menuId ) {
     
     var ethereumClientInfo = [];
    
-    debug( 7, 'web3.eth.accounts.indexOf( ' + getLocalStorageData( 'defaultAccountAddress' ) + ' ) : ' + web3.eth.accounts.indexOf( getLocalStorageData( 'defaultAccountAddress' ) ) );
-  
-    if ( ( getLocalStorageData( 'defaultAccountAddress' ) ) === undefined || ( web3.eth.accounts.indexOf( getLocalStorageData( 'defaultAccountAddress' ) ) < 0 ) ) {
-      setLocalStorageData( 'defaultAccountAddress', web3.eth.coinbase );
-      debug( 1, 'Initializing default account address to : "' + getLocalStorageData( 'defaultAccountAddress' ) + '"' );
-    }
+    switch ( isClientAlive( clientUrl ) ) {
+      case true :
+        debug( 7, 'web3.eth.accounts.indexOf( ' + getLocalStorageData( 'defaultAccountAddress' ) + ' ) : ' + web3.eth.accounts.indexOf( getLocalStorageData( 'defaultAccountAddress' ) ) );
     
-    if( isClientAlive( clientUrl ) ) {
-      
-      switch( getLocalStorageData( 'activeMenu' ) ) {
-        case 'home' :
-          var defaultAccountInfo = [];
-          defaultAccountInfo.push( { name: 'Account address', value: getLocalStorageData( 'defaultAccountAddress' ) } );
-          
-          var balance = web3.eth.getBalance( getLocalStorageData( 'defaultAccountAddress' ) );
-          var defaultAccountWeiBalance = web3.toBigNumber( balance ).toString( 10 );
-          defaultAccountInfo.push( { name: 'Balance (wei)', value: defaultAccountWeiBalance } );
-  
-          var defaultAccountEtherBalance = web3.toBigNumber( balance ).dividedBy(1000000000000000000).toString( 10 );
-          defaultAccountInfo.push( { name: 'Balance (ETH)', value: defaultAccountEtherBalance } );
-          
-          bodyHTMLOutput += genTable( 'Default account informations', defaultAccountInfo );
-  
-          var defaultAccountAdditionnalInfo = [];
-          var defaultAccountBTCBalance = web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.0005).toString( 10 );
-          defaultAccountAdditionnalInfo.push( { name: 'Balance (BTC)', value: defaultAccountBTCBalance } );
-  
-          var defaultAccountUSDBalance = web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.12156).toString( 10 );
-          defaultAccountAdditionnalInfo.push( { name: 'Balance (USD)', value: defaultAccountUSDBalance } );
-          
-          bodyHTMLOutput += genTable( 'Additionnal informations', defaultAccountAdditionnalInfo );
-          break;
-
-        case 'accounts' :
-          var defaultAccountInfo = [];
-          defaultAccountInfo.push( { name: 'Default account', value: getLocalStorageData( 'defaultAccountAddress' ) } );
-  
-          bodyHTMLOutput += genTable( 'Default account informations', defaultAccountInfo );
-          
-          var otherAccountInfo = [];
-          for ( var a = 0; a < web3.eth.accounts.length; a++ ) {
-            otherAccountInfo.push( { name: '[' + a + '] account', value: web3.eth.accounts[a] } );
-          }
-          
-          // bodyHTMLOutput += genTable( 'Other accounts informations', otherAccountInfo );
-  
-          var defaultAccountFormData = [];
-          defaultAccountFormData.push( { id: 'accountSelection', name: 'Choose an account', type: 'select', value: otherAccountInfo } );
-          defaultAccountFormData.push( { id: 'setDefaultAccount', type: 'submit', value: 'Set default account' } );
-          bodyHTMLOutput += genForm( 'setDefaultAccountForm', 'Set default Account', defaultAccountFormData, 'setDefaultAccountAdress( "setDefaultAccountForm", "accountSelection" )' );
-
-          var recipientAccountFormData = [];
-          //recipientAccountFormData.push( { id: 'addrecipientAccountAddress', type: 'text', value: 'Add account' } );
-          //recipientAccountFormData.push( { id: 'addRecipientAccountAddressSubmit', type: 'submit', value: 'Add account' } );
-
-          localStorage.removeItem('recipientAccountAddressList');
-          if ( getLocalStorageData( 'recipientAccountAddressList' ) === undefined ) {
-            setLocalStorageData( 'recipientAccountAddressList', [{ name: 'None', value: '' }] );
-            debug( 7, 'Initializing  recipientAccountAddressList : "' + getLocalStorageData( 'recipientAccountAddressList' ) + '"' );
-          }
-
-          recipientAccountFormData.push( { id: 'recipientAccountSelection', name: 'Choose an account', type: 'select', value: getLocalStorageData( 'recipientAccountAddressList' ), display: 'nameAndValue'  } );
-          recipientAccountFormData.push( { id: 'delRecipientAccountAddressSubmit', type: 'submit', value: 'Remove account' } );
-          bodyHTMLOutput += genForm( 'addRecipientAccountAddressForm', 'Recipients accounts address', recipientAccountFormData, 'addRecipientAccountAddress( "recipientAccountAddress" )' );
-  
-          break;
-
-        case 'send' :
-            bodyHTMLOutput += 'SEND';
+        if ( ( getLocalStorageData( 'defaultAccountAddress' ) ) === undefined || ( web3.eth.accounts.indexOf( getLocalStorageData( 'defaultAccountAddress' ) ) < 0 ) ) {
+          setLocalStorageData( 'defaultAccountAddress', web3.eth.coinbase );
+          debug( 1, 'Initializing default account address to : "' + getLocalStorageData( 'defaultAccountAddress' ) + '"' );
+        }
+        
+        switch( getLocalStorageData( 'activeMenu' ) ) {
+          case 'home' :
+            var defaultAccountInfo = [];
+            defaultAccountInfo.push( { name: 'Account address', value: getLocalStorageData( 'defaultAccountAddress' ) } );
+            
+            var balance = web3.eth.getBalance( getLocalStorageData( 'defaultAccountAddress' ) );
+            var defaultAccountWeiBalance = web3.toBigNumber( balance ).toString( 10 );
+            defaultAccountInfo.push( { name: 'Balance (wei)', value: defaultAccountWeiBalance } );
+    
+            var defaultAccountEtherBalance = web3.toBigNumber( balance ).dividedBy(1000000000000000000).toString( 10 );
+            defaultAccountInfo.push( { name: 'Balance (ETH)', value: defaultAccountEtherBalance } );
+            
+            bodyHTMLOutput += genTable( 'Default account informations', defaultAccountInfo );
+    
+            var defaultAccountAdditionnalInfo = [];
+            var defaultAccountBTCBalance = web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.0005).toString( 10 );
+            defaultAccountAdditionnalInfo.push( { name: 'Balance (BTC)', value: defaultAccountBTCBalance } );
+    
+            var defaultAccountUSDBalance = web3.toBigNumber( balance ).dividedBy(1000000000000000000).times(0.12156).toString( 10 );
+            defaultAccountAdditionnalInfo.push( { name: 'Balance (USD)', value: defaultAccountUSDBalance } );
+            
+            bodyHTMLOutput += genTable( 'Additionnal informations', defaultAccountAdditionnalInfo );
             break;
-
-        case 'about':
-          ethereumClientInfo.push( { name: 'url', value: clientUrl } );
-          ethereumClientInfo.push( { name: 'state', value: 'alive' } );
-          ethereumClientInfo.push( { name: 'version', value: web3.version.client } );
-      
-          var ethereumClientAPI = [ { name: 'version', value: web3.version.api } ];
-     
-          var ethereumNetworkInfo = [];
-          ethereumNetworkInfo.push( { name: 'version', value: web3.version.network } );
-          ethereumNetworkInfo.push( { name: 'listen', value: web3.net.listening } );
-          ethereumNetworkInfo.push( { name: 'peer(s)', value: web3.net.peerCount } );
   
-          bodyHTMLOutput += genTable( "Ethereum API", ethereumClientAPI );
-          bodyHTMLOutput += genTable( "Ethereum Client", ethereumClientInfo );
-          bodyHTMLOutput += genTable( "Ethereum Network", ethereumNetworkInfo );
-
-          var resetSettingsFormData = [];
-          resetSettingsFormData.push( { id: 'resetSettingsSubmit', type: 'submit', value: 'Reset all settings' } );
-          bodyHTMLOutput += genForm( 'resetSettingsForm', 'Reset all settings', resetSettingsFormData, 'resetSettings( "resetSettingsForm" )' );
-          if ( DEBUG > 0 ) {
-            var ethereumUnitTestData = [];
-            ethereumUnitTestData.push( { name: 'Unit test', value: '<a href="unitTest.html">Q-Unit</a>' } );
- 
-            bodyHTMLOutput += genTable( "Unit Test", ethereumUnitTestData );
-          }
-          break;
-        default:
-          bodyHTMLOutput += genError( 'Menu default content. Should never happend ....' );
-      }
-  
-    } else {
-      ethereumClientInfo.push( {name: 'State', value: 'offline' } );
-      bodyHTMLOutput += genTable( "Ethereum Client", ethereumClientInfo );
-    }
+          case 'accounts' :
+            var defaultAccountInfo = [];
+            defaultAccountInfo.push( { name: 'Default account', value: getLocalStorageData( 'defaultAccountAddress' ) } );
     
+            bodyHTMLOutput += genTable( 'Default account informations', defaultAccountInfo );
+            
+            var otherAccountInfo = [];
+            for ( var a = 0; a < web3.eth.accounts.length; a++ ) {
+              otherAccountInfo.push( { name: '[' + a + '] account', value: web3.eth.accounts[a] } );
+            }
+            
+            // bodyHTMLOutput += genTable( 'Other accounts informations', otherAccountInfo );
+    
+            var defaultAccountFormData = [];
+            defaultAccountFormData.push( { id: 'accountSelection', name: 'Choose an account', type: 'select', value: otherAccountInfo } );
+            defaultAccountFormData.push( { id: 'setDefaultAccount', type: 'submit', value: 'Set default account' } );
+            bodyHTMLOutput += genForm( 'setDefaultAccountForm', 'Set default Account', defaultAccountFormData, 'setDefaultAccountAdress( "setDefaultAccountForm", "accountSelection" )' );
+  
+            var recipientAccountFormData = [];
+            //recipientAccountFormData.push( { id: 'addrecipientAccountAddress', type: 'text', value: 'Add account' } );
+            //recipientAccountFormData.push( { id: 'addRecipientAccountAddressSubmit', type: 'submit', value: 'Add account' } );
+  
+            localStorage.removeItem('recipientAccountAddressList');
+            if ( getLocalStorageData( 'recipientAccountAddressList' ) === undefined ) {
+              setLocalStorageData( 'recipientAccountAddressList', [{ name: 'None', value: '' }] );
+              debug( 7, 'Initializing  recipientAccountAddressList : "' + getLocalStorageData( 'recipientAccountAddressList' ) + '"' );
+            }
+  
+            recipientAccountFormData.push( { id: 'recipientAccountSelection', name: 'Choose an account', type: 'select', value: getLocalStorageData( 'recipientAccountAddressList' ), display: 'nameAndValue'  } );
+            recipientAccountFormData.push( { id: 'delRecipientAccountAddressSubmit', type: 'submit', value: 'Remove account' } );
+            bodyHTMLOutput += genForm( 'addRecipientAccountAddressForm', 'Recipients accounts address', recipientAccountFormData, 'addRecipientAccountAddress( "recipientAccountAddress" )' );
+    
+            break;
+  
+          case 'send' :
+              bodyHTMLOutput += 'SEND';
+              break;
+  
+          case 'about':
+            ethereumClientInfo.push( { name: 'url', value: clientUrl } );
+            ethereumClientInfo.push( { name: 'state', value: 'alive' } );
+            ethereumClientInfo.push( { name: 'version', value: web3.version.client } );
+        
+            var ethereumClientAPI = [ { name: 'version', value: web3.version.api } ];
+       
+            var ethereumNetworkInfo = [];
+            ethereumNetworkInfo.push( { name: 'version', value: web3.version.network } );
+            ethereumNetworkInfo.push( { name: 'listen', value: web3.net.listening } );
+            ethereumNetworkInfo.push( { name: 'peer(s)', value: web3.net.peerCount } );
+    
+            bodyHTMLOutput += genTable( "Ethereum API", ethereumClientAPI );
+            bodyHTMLOutput += genTable( "Ethereum Client", ethereumClientInfo );
+            bodyHTMLOutput += genTable( "Ethereum Network", ethereumNetworkInfo );
+  
+            var resetSettingsFormData = [];
+            resetSettingsFormData.push( { id: 'resetSettingsSubmit', type: 'submit', value: 'Reset all settings' } );
+            bodyHTMLOutput += genForm( 'resetSettingsForm', 'Reset all settings', resetSettingsFormData, 'resetSettings( "resetSettingsForm" )' );
+            break;
+          default:
+            bodyHTMLOutput += genError( 'Menu default content. Should never happend ....' );
+        }
+        break; 
+      case false :
+        ethereumClientInfo.push( {name: 'State', value: 'offline' } );
+        bodyHTMLOutput += genTable( "Ethereum Client", ethereumClientInfo );
+        if ( DEBUG > 0 ) {
+          var ethereumUnitTestData = [];
+          ethereumUnitTestData.push( { name: 'Unit test', value: '<a href="unitTest.html">Q-Unit</a>' } );
+
+          bodyHTMLOutput += genTable( "Unit Test", ethereumUnitTestData );
+        }
+        break;
+      case undefined :
+        bodyHTMLOutput += genError( 'Bad ethreum URL node syntax : Should be "http://IP:port" or "http://hostname:port"' )      
+        if ( DEBUG > 0 ) {
+          var ethereumUnitTestData = [];
+          ethereumUnitTestData.push( { name: 'Unit test', value: '<a href="unitTest.html">Q-Unit</a>' } );
+
+          bodyHTMLOutput += genTable( "Unit Test", ethereumUnitTestData );
+        }
+        break;
+      default : 
+        bodyHTMLOutput += genError( 'Unknown isClientAlive response. Should never happend ....' );
+    }
     bodyHTMLOutput += '</div>'; 
   }
   document.getElementById( 'myApp' ).innerHTML = bodyHTMLOutput;
