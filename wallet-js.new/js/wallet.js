@@ -81,14 +81,65 @@ function isClientAlive( clientURL ) {
 function genForm( formId, formTitle, formData, formSubmitFunction ) {
   debug( 9, 'BEGIN genForm()' );
   debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' )' );
- 
-  var formHTMLOutput = '<div class="row">' +
+
+  var formHTMLOutput = ''; 
+
+  if ( ( formId === undefined ) || ( formId == '' ) ) {
+    formHTMLOutput = genError( 'Undefined or blank form id' );
+    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+    debug( 9, 'END genForm()' );
+    return( formHTMLOutput );
+  }
+
+  if ( formTitle === undefined ) {
+    formHTMLOutput = genError( 'Undefined form title' );
+    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+    debug( 9, 'END genForm()' );
+    return( formHTMLOutput );
+  }
+
+  if ( ( formData === undefined ) || ( formData == '' ) || ( formData == [] ) || ( formData == [ undefined ] ) ) {
+    formHTMLOutput = genError( 'Undefined or blank or empty form data' );
+    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+    debug( 9, 'END genForm()' );
+    return( formHTMLOutput );
+  }
+
+  if ( formSubmitFunction === undefined ) {
+    formHTMLOutput = genError( 'Undefined form submit function' );
+    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+    debug( 9, 'END genForm()' );
+    return( formHTMLOutput );
+  }
+  
+  formHTMLOutput = '<div class="row">' +
                          '<div class="cell">' +
                            '<p class="formTitle"><strong>' + formTitle + '</strong></p>' +
                              '<form method="POST" id="' + formId + '" onsubmit=\'' + formSubmitFunction + '\' >' +
                                '<table>';
 
   for( var i = 0; i < formData.length; i++ ) {  
+    if ( formData[i].type === undefined ) {
+      formHTMLOutput = genError( 'Undefined form data element type' );
+      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+      debug( 9, 'END genForm()' );
+      return( formHTMLOutput );
+    }
+   
+    if ( ( formData[i].name === undefined ) || ( formData[i].name == '' ) ) {
+      formHTMLOutput = genError( 'Undefined or blank form data element name' );
+      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+      debug( 9, 'END genForm()' );
+      return( formHTMLOutput );
+    }
+    
+    if ( formData[i].value === undefined ) {
+      formHTMLOutput = genError( 'Undefined form data element value' );
+      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+      debug( 9, 'END genForm()' );
+      return( formHTMLOutput );
+    }
+
     switch( formData[i].type ) {
       case 'submit' :
         formHTMLOutput += '<tr><td class="submit" colspan="2"><input id="' + formData[i].id + '" type="submit" value="' + formData[i].value + '"></tr></td>';
@@ -122,7 +173,11 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
         break;
 
       default:
-        formHTMLOutput += genError( 'Form element default content. Should never happend ....' );
+        formHTMLOutput = genError( 'Bad form data element type' );
+        debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+        debug( 9, 'END genForm()' );
+        return( formHTMLOutput );
+
     }
   }
   
