@@ -125,13 +125,14 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
       debug( 9, 'END genForm()' );
       return( formHTMLOutput );
     }
-   
-    if ( ( formData[i].name === undefined ) || ( formData[i].name == '' ) ) {
-      formHTMLOutput = genError( 'Undefined or blank form data element name' );
+    
+    if ( ( formData[i].id === undefined ) || ( formData[i].id == '' ) ) {
+      formHTMLOutput = genError( 'Undefined or blank form data element id' );
       debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
       debug( 9, 'END genForm()' );
       return( formHTMLOutput );
     }
+   
     
     if ( formData[i].value === undefined ) {
       formHTMLOutput = genError( 'Undefined form data element value' );
@@ -146,6 +147,13 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
         break;
 
       case 'select' :
+        if ( ( formData[i].name === undefined ) || ( formData[i].name == '' ) ) {
+          formHTMLOutput = genError( 'Undefined or blank form data element name' );
+          debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+          debug( 9, 'END genForm()' );
+          return( formHTMLOutput );
+        }
+
         var selectHTMLOutput = '<select id="' + formData[i].id + '">' ;
         debug( 7, 'Found "' + formData[i].value.length + '" option(s) to add.' );
         for ( var o = 0; o < formData[i].value.length; o++ ) {
@@ -359,7 +367,7 @@ function main( menuId ) {
     bodyHTMLOutput += '<div class="app">'; 
     
     var web3 = require( 'web3' );
-    var clientUrl = 'http://localhost:8545';
+    var clientUrl = 'http://localhost:8546';
  
     web3.setProvider( new web3.providers.HttpProvider( clientUrl ) );
     
@@ -453,8 +461,15 @@ function main( menuId ) {
             bodyHTMLOutput += genTable( "Ethereum Network", ethereumNetworkInfo );
   
             var resetSettingsFormData = [];
-            resetSettingsFormData.push( { id: 'resetSettingsSubmit', type: 'submit', value: 'Reset all settings' } );
+            resetSettingsFormData.push( { id: 'resetSettingsSubmit', name: 'Reset',  type: 'submit', value: 'Reset all settings' } );
             bodyHTMLOutput += genForm( 'resetSettingsForm', 'Reset all settings', resetSettingsFormData, 'resetSettings( "resetSettingsForm" )' );
+        
+            if ( DEBUG > 0 ) {
+              var ethereumUnitTestData = [];
+              ethereumUnitTestData.push( { name: 'Unit test', value: '<a href="unitTest.html">Q-Unit</a>' } );
+
+              bodyHTMLOutput += genTable( "Unit Test", ethereumUnitTestData );
+            }
             break;
           default:
             bodyHTMLOutput += genError( 'Menu default content. Should never happend ....' );
