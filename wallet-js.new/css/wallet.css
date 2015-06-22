@@ -112,5 +112,37 @@ p.formTitle {
 }
 td.submit {
   text-align: center;
-  padding-top: 15px;
+  padding: 3px 0px 10px 0px;
+}
+
+td.formDataHeader {
+  padding: 0px;
+}
+
+td.formDataContent {
+  width: 100%;
+}
+
+input.formElementSubmit {
+}
+
+input.formElement {
+  padding: 0px;
+  width: 100%;
+}
+
+select.formElement {
+  padding: 0px;
+  width: 100%;
+}
+
+tr.formElementSubmit {
+  
+}
+
+tr.formElement {
+}
+
+table.form { 
+  width: 100%;
 }

@@ -116,7 +116,7 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
                          '<div class="cell">' +
                            '<p class="formTitle"><strong>' + formTitle + '</strong></p>' +
                              '<form method="POST" id="' + formId + '" onsubmit=\'' + formSubmitFunction + '\' >' +
-                               '<table>';
+                               '<table class="form">';
 
   for( var i = 0; i < formData.length; i++ ) {  
     if ( formData[i].type === undefined ) {
@@ -143,7 +143,7 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
 
     switch( formData[i].type ) {
       case 'submit' :
-        formHTMLOutput += '<tr><td class="submit" colspan="2"><input id="' + formData[i].id + '" type="submit" value="' + formData[i].value + '"></tr></td>';
+        formHTMLOutput += '<tr class="formElementSubmit"><td colspan="3" class="submit" colspan="2"><input class="formElementSubmit" id="' + formData[i].id + '" type="submit" value="' + formData[i].value + '"></tr></td>';
         break;
 
       case 'select' :
@@ -154,7 +154,7 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
           return( formHTMLOutput );
         }
 
-        var selectHTMLOutput = '<select id="' + formData[i].id + '">' ;
+        var selectHTMLOutput = '<select class="formElement" id="' + formData[i].id + '">' ;
         debug( 7, 'Found "' + formData[i].value.length + '" option(s) to add.' );
         for ( var o = 0; o < formData[i].value.length; o++ ) {
           debug( 7, 'Add <option> [' + formData[i].value[o].name + '] = "' + formData[i].value[o].value + '" to <select> "' + formData[i].id + '"' );
@@ -172,12 +172,27 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
         }
         selectHTMLOutput += '</select>';
 
-        formHTMLOutput += '<tr>' +
+        formHTMLOutput += '<tr class="formElement">' +
                             '<td class="formDataHeader"><strong>' + formData[i].name + '</strong></td>' + 
-                            '<td class="formDataContent"><strong>: </strong> ' + selectHTMLOutput + '  </td>' + 
+                            '<td class="formDataHeader"><strong>:</strong></td>' +
+                            '<td class="formDataContent">' + selectHTMLOutput + '  </td>' + 
                           '</tr>';
         break;
       case 'text' :
+        if ( ( formData[i].name === undefined ) || ( formData[i].name == '' ) ) {
+          formHTMLOutput = genError( 'Undefined or blank form data element name' );
+          debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+          debug( 9, 'END genForm()' );
+          return( formHTMLOutput );
+        }
+        
+        var textHTMLOutput = '<input class="formElement" id="' + formData[i].id + '" type="text"/>';
+
+        formHTMLOutput += '<tr class="formElement">' +
+                            '<td class="formDataHeader"><strong>' + formData[i].name + '</strong></td>' +
+                            '<td class="formDataHeader"><strong>:</strong></td>' +
+                            '<td class="formDataContent">' + textHTMLOutput + '  </td>' +
+                          '</tr>';
         break;
 
       default:
@@ -420,13 +435,13 @@ function main( menuId ) {
             // bodyHTMLOutput += genTable( 'Other accounts informations', otherAccountInfo );
     
             var defaultAccountFormData = [];
-            defaultAccountFormData.push( { id: 'accountSelection', name: 'Choose an account', type: 'select', value: otherAccountInfo } );
+            defaultAccountFormData.push( { id: 'accountSelection', name: 'Account', type: 'select', value: otherAccountInfo } );
             defaultAccountFormData.push( { id: 'setDefaultAccount', type: 'submit', value: 'Set default account' } );
             bodyHTMLOutput += genForm( 'setDefaultAccountForm', 'Set default Account', defaultAccountFormData, 'setDefaultAccountAdress( "setDefaultAccountForm", "accountSelection" )' );
   
             var recipientAccountFormData = [];
-            //recipientAccountFormData.push( { id: 'addrecipientAccountAddress', type: 'text', value: 'Add account' } );
-            //recipientAccountFormData.push( { id: 'addRecipientAccountAddressSubmit', type: 'submit', value: 'Add account' } );
+            recipientAccountFormData.push( { id: 'recipientAccountAddressInput', type: 'text', name: 'Account', value: '' } );
+            recipientAccountFormData.push( { id: 'addRecipientAccountAddressSubmit', type: 'submit', value: 'Add account' } );
   
             localStorage.removeItem('recipientAccountAddressList');
             if ( getLocalStorageData( 'recipientAccountAddressList' ) === undefined ) {
@@ -434,7 +449,7 @@ function main( menuId ) {
               debug( 7, 'Initializing  recipientAccountAddressList : "' + getLocalStorageData( 'recipientAccountAddressList' ) + '"' );
             }
   
-            recipientAccountFormData.push( { id: 'recipientAccountSelection', name: 'Choose an account', type: 'select', value: getLocalStorageData( 'recipientAccountAddressList' ), display: 'nameAndValue'  } );
+            recipientAccountFormData.push( { id: 'recipientAccountSelection', name: 'Account', type: 'select', value: getLocalStorageData( 'recipientAccountAddressList' ), display: 'nameAndValue'  } );
             recipientAccountFormData.push( { id: 'delRecipientAccountAddressSubmit', type: 'submit', value: 'Remove account' } );
             bodyHTMLOutput += genForm( 'addRecipientAccountAddressForm', 'Recipients accounts address', recipientAccountFormData, 'addRecipientAccountAddress( "recipientAccountAddress" )' );
     
