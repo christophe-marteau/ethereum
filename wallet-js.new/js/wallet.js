@@ -78,36 +78,38 @@ function isClientAlive( clientURL ) {
  [in] formSubmitFunction : The function call after the form is submitted
  [return] The HTML output for the table
 */
-function genForm( formId, formTitle, formData, formSubmitFunction ) {
+function genForm( formId, formTitle, formData, formFunction ) {
   debug( 9, 'BEGIN genForm()' );
-  debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' )' );
+  debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' )' );
 
   var formHTMLOutput = ''; 
 
   if ( ( formId === undefined ) || ( formId == '' ) ) {
     formHTMLOutput = genError( 'Undefined or blank form id' );
-    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"' );
     debug( 9, 'END genForm()' );
     return( formHTMLOutput );
   }
 
   if ( formTitle === undefined ) {
     formHTMLOutput = genError( 'Undefined form title' );
-    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"' );
     debug( 9, 'END genForm()' );
     return( formHTMLOutput );
   }
 
   if ( ( formData === undefined ) || ( formData == '' ) || ( formData == [] ) || ( formData == [ undefined ] ) ) {
     formHTMLOutput = genError( 'Undefined or blank or empty form data' );
-    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"' );
     debug( 9, 'END genForm()' );
     return( formHTMLOutput );
   }
-
-  if ( formSubmitFunction === undefined ) {
-    formHTMLOutput = genError( 'Undefined form submit function' );
-    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+  
+  var functionRegExp = new RegExp( '^[^(]+' );
+  debug( 8, 'Function regexp output : ' + functionRegExp.exec( formFunction ) );
+  if ( ( formFunction === undefined ) || ( formFunction === '' ) || ( typeof window[functionRegExp.exec( formFunction )] !== "function" ) ) {
+    formHTMLOutput = genError( 'Undefined, blank or undeclared form submit function' );
+    debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"' );
     debug( 9, 'END genForm()' );
     return( formHTMLOutput );
   }
@@ -115,28 +117,27 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
   formHTMLOutput = '<div class="row">' +
                          '<div class="cell">' +
                            '<p class="formTitle"><strong>' + formTitle + '</strong></p>' +
-                             '<form method="POST" id="' + formId + '" onsubmit=\'' + formSubmitFunction + '\' >' +
+                             '<form method="POST" id="' + formId + '" onsubmit=\'' + formFunction + '\'>' +
                                '<table class="form">';
 
   for( var i = 0; i < formData.length; i++ ) {  
     if ( formData[i].type === undefined ) {
       formHTMLOutput = genError( 'Undefined form data element type' );
-      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"' );
       debug( 9, 'END genForm()' );
       return( formHTMLOutput );
     }
     
     if ( ( formData[i].id === undefined ) || ( formData[i].id == '' ) ) {
       formHTMLOutput = genError( 'Undefined or blank form data element id' );
-      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"' );
       debug( 9, 'END genForm()' );
       return( formHTMLOutput );
     }
    
-    
     if ( formData[i].value === undefined ) {
       formHTMLOutput = genError( 'Undefined form data element value' );
-      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+      debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"' );
       debug( 9, 'END genForm()' );
       return( formHTMLOutput );
     }
@@ -149,7 +150,7 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
       case 'select' :
         if ( ( formData[i].name === undefined ) || ( formData[i].name == '' ) ) {
           formHTMLOutput = genError( 'Undefined or blank form data element name' );
-          debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+          debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"');
           debug( 9, 'END genForm()' );
           return( formHTMLOutput );
         }
@@ -181,14 +182,14 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
       case 'text' :
         if ( ( formData[i].name === undefined ) || ( formData[i].name == '' ) ) {
           formHTMLOutput = genError( 'Undefined or blank form data element name' );
-          debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+          debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"');
           debug( 9, 'END genForm()' );
           return( formHTMLOutput );
         }
-        
-        var textHTMLOutput = '<input class="formElement" id="' + formData[i].id + '" type="text"/>';
 
-        formHTMLOutput += '<tr class="formElement">' +
+        var textHTMLOutput = '<input class="formElement" id="' + formData[i].id + '" type="text" required="' + formData[i].required + '" placeholder="' + formData[i].placeholder + '"  pattern="' + formData[i].pattern + '" title="' + formData[i].title + '"/>';
+
+        formHTMLOutput += '<tr class="formElement" id="' + formData[i].id + 'Text">' +
                             '<td class="formDataHeader"><strong>' + formData[i].name + '</strong></td>' +
                             '<td class="formDataHeader"><strong>:</strong></td>' +
                             '<td class="formDataContent">' + textHTMLOutput + '  </td>' +
@@ -197,7 +198,7 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
 
       default:
         formHTMLOutput = genError( 'Bad form data element type' );
-        debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+        debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formFunction + ' ) = "' + formHTMLOutput + '"');
         debug( 9, 'END genForm()' );
         return( formHTMLOutput );
 
@@ -210,7 +211,7 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
                     '</div>' + 
                     '<div class="space"></div>'; 
   
-  debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ', ' + formSubmitFunction + ' ) = "' + formHTMLOutput + '"');
+  debug( 8, 'genForm( ' + formId + ', ' + formTitle + ', ' + JSON.stringify( formData ) + ' ) = "' + formHTMLOutput + '"');
   debug( 9, 'END genForm()' );
   return( formHTMLOutput );
 }
@@ -220,11 +221,11 @@ function genForm( formId, formTitle, formData, formSubmitFunction ) {
   [in] formId : The form Id ro reset
 */
 function resetForm( formId ) {
-  debug( 1, 'BEGIN resetForm()' );
-  debug( 1, 'BEGIN resetForm()' );
+  debug( 9, 'BEGIN resetForm()' );
+  debug( 8, 'BEGIN resetForm( ' + formId + ' )' );
   document.getElementById( formId ).reset();
   document.getElementById( formId ).method = 'GET';
-  debug( 1, 'END resetForm()' );
+  debug( 9, 'END resetForm()' );
 }
 
 /* 
@@ -233,11 +234,54 @@ function resetForm( formId ) {
   [in] elementId : The id of the select field 
 */
 function setDefaultAccountAdress( formId, elementId ) {
-  debug( 1, 'BEGIN setDefaultAccountAddress()' );
-  debug( 1, 'BEGIN setDefaultAccountAddress( ' + elementId + ' )' );
+  debug( 9, 'BEGIN setDefaultAccountAddress()' );
+  debug( 5, 'BEGIN setDefaultAccountAddress( ' +  formId + ', ' + elementId + ' )' );
   setLocalStorageData( 'defaultAccountAddress', document.getElementById( elementId ).value );
   resetForm( formId );
-  debug( 1, 'END setDefaultAccountAddress()' );
+  debug( 9, 'END setDefaultAccountAddress()' );
+}
+
+function delRecipientAccountAddress( formId, elementId ) {
+  debug( 9, 'BEGIN delRecipientAccountAddress()' );
+  debug( 5, 'delRecipientAccountAddress( ' + formId + ', ' + elementId + ' )' );
+
+  var recipientAccountAddressListData = getLocalStorageData( 'recipientAccountAddressList' );
+  var searchIndex = -1 ;
+
+  debug( 5, 'Looking for element with value "' + document.getElementById( elementId ).value + '"' );
+  for ( index = 0; index < recipientAccountAddressListData.length; index++ ) {
+    debug( 5, 'Found element name "' + recipientAccountAddressListData[index].name + '" with value "' + recipientAccountAddressListData[index].value + '" at index "' + index + '"' );
+    if ( recipientAccountAddressListData[index].value === document.getElementById( elementId ).value ) {
+      searchIndex = index;
+    } 
+  }
+  debug( 5, 'Array element to remove : ' + searchIndex );
+  if ( searchIndex >= 0 ) { 
+    recipientAccountAddressListData.splice( searchIndex, 1 );
+  }
+  if ( recipientAccountAddressListData.length > 0 ) {
+    setLocalStorageData( 'recipientAccountAddressList',  recipientAccountAddressListData );
+  } else {
+    localStorage.removeItem( 'recipientAccountAddressList' );
+  }
+  debug( 9, 'END delRecipientAccountAddress()' );
+}
+
+function addRecipientAccountAddress( formId, labelElementId, addressElementId ) {
+  debug( 9, 'BEGIN addRecipientAccountAddress()' );
+  debug( 5, 'addRecipientAccountAddress( ' + formId + ', ' + labelElementId + ', ' + addressElementId + ' )' );
+  // Check if exist same address with different label
+  // Check if exist same label with different address
+  // Check if exist same label with same address
+
+  var recipientAccountAddressListData = getLocalStorageData( 'recipientAccountAddressList' );
+  if ( recipientAccountAddressListData === undefined ) {
+    recipientAccountAddressListData = [];
+  }
+  recipientAccountAddressListData.push( { name: document.getElementById( labelElementId ).value , value: document.getElementById( addressElementId ).value } );
+  setLocalStorageData( 'recipientAccountAddressList',  recipientAccountAddressListData );
+  resetForm( formId );
+  debug( 9, 'END addRecipientAccountAddress()' );
 }
 
 /* 
@@ -340,14 +384,14 @@ function getLocalStorageData( key ) {
   debug( 9, 'BEGIN getLocalStorageData()' );
   debug( 8, 'getLocalStorageData( ' + key + ' )' );
 
-  debug( 7, 'localStorage[' + key + '] = "' + localStorage.getItem( key ) + '"' );
+  debug( 7, 'localStorage[' + key + '] = "' + JSON.stringify( localStorage.getItem( key ) ) + '"' );
  
   var storageValue = undefined;
   if ( localStorage.getItem( key ) !== null ) {
     storageValue =  JSON.parse( localStorage.getItem( key ) );
   }
 
-  debug( 8, 'getLocalStorageData( ' + key + ' ) = "' + storageValue + '"' );
+  debug( 8, 'getLocalStorageData( ' + key + ' ) = "' + JSON.stringify( storageValue ) + '"' );
   debug( 9, 'END getLocalStorageData()' );
   return( storageValue );
 }
@@ -439,19 +483,18 @@ function main( menuId ) {
             defaultAccountFormData.push( { id: 'setDefaultAccount', type: 'submit', value: 'Set default account' } );
             bodyHTMLOutput += genForm( 'setDefaultAccountForm', 'Set default Account', defaultAccountFormData, 'setDefaultAccountAdress( "setDefaultAccountForm", "accountSelection" )' );
   
-            var recipientAccountFormData = [];
-            recipientAccountFormData.push( { id: 'recipientAccountAddressInput', type: 'text', name: 'Account', value: '' } );
-            recipientAccountFormData.push( { id: 'addRecipientAccountAddressSubmit', type: 'submit', value: 'Add account' } );
+            var addRecipientAccountFormData = [];
+            addRecipientAccountFormData.push( { id: 'accountLabel', type: 'text', name: 'Label', value: '', pattern: '[A-Za-z0-9 -_.]{1,10}', title: 'May contain at least one alphanumeric, point, space, dash or underscore chararcter up to 40', required: 'yes', placeholder: 'Account label' } );
+            addRecipientAccountFormData.push( { id: 'accountAddress', type: 'text', name: 'Address', value: '', pattern: '0x[a-z0-9]{40}', title: 'Must begin with 0x and end with 40 lowercase alphanumeric character', required: 'yes', placeholder: '0x0000000000000000000000000000000000000000' } );
+            addRecipientAccountFormData.push( { id: 'addRecipientAccount', type: 'submit', value: 'Add account' } );
+            bodyHTMLOutput += genForm( 'addRecipientAccountForm', 'Recipients accounts address', addRecipientAccountFormData, 'addRecipientAccountAddress( "addRecipientAccountForm", "accountLabel", "accountAddress" )' );
   
-            localStorage.removeItem('recipientAccountAddressList');
-            if ( getLocalStorageData( 'recipientAccountAddressList' ) === undefined ) {
-              setLocalStorageData( 'recipientAccountAddressList', [{ name: 'None', value: '' }] );
-              debug( 7, 'Initializing  recipientAccountAddressList : "' + getLocalStorageData( 'recipientAccountAddressList' ) + '"' );
+            if ( getLocalStorageData( 'recipientAccountAddressList' ) !== undefined ) {
+              var delRecipientAccountFormData = [];  
+              delRecipientAccountFormData.push( { id: 'accountSelection', name: 'Account', type: 'select', value: getLocalStorageData( 'recipientAccountAddressList' ), display: 'nameAndValue'  } );
+              delRecipientAccountFormData.push( { id: 'delRecipientAccount', type: 'submit', value: 'Remove account' } );
+              bodyHTMLOutput += genForm( 'delRecipientAccountForm', 'Recipients accounts address', delRecipientAccountFormData, 'delRecipientAccountAddress( "delRecipientAccountForm", "accountSelection" )' );
             }
-  
-            recipientAccountFormData.push( { id: 'recipientAccountSelection', name: 'Account', type: 'select', value: getLocalStorageData( 'recipientAccountAddressList' ), display: 'nameAndValue'  } );
-            recipientAccountFormData.push( { id: 'delRecipientAccountAddressSubmit', type: 'submit', value: 'Remove account' } );
-            bodyHTMLOutput += genForm( 'addRecipientAccountAddressForm', 'Recipients accounts address', recipientAccountFormData, 'addRecipientAccountAddress( "recipientAccountAddress" )' );
     
             break;
   

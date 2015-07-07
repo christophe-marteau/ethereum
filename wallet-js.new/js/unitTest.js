@@ -27,6 +27,10 @@ QUnit.test( 'getLocalStorageData', function( assert ) {
   assert.deepEqual( getLocalStorageData( 'myTestData' ), 'myTestOk', "Check that a set value can be retrieve" );
 } );
 
+function submitMyForm() {
+  return( true );
+}
+
 QUnit.module( 'Framework' );
 QUnit.test( 'genForm', function( assert ) {
   // formId
@@ -35,11 +39,16 @@ QUnit.test( 'genForm', function( assert ) {
   
   // formTitle
   assert.deepEqual( genForm( 'myFormId', undefined, [ { name: 'myInputId', value: 'myInputValue', type: 'submit' } ], 'submitMyForm()' ), genError( 'Undefined form title' ), 'Return an error when formTitle is undefined' );
+ 
+  // formfunction
+  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { name: 'myInputId', value: 'myInputValue', type: 'submit' } ], undefined ), genError( 'Undefined, blank or undeclared form submit function' ), 'Return an error when formFunction is undefined' );
+  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { name: 'myInputId', value: 'myInputValue', type: 'submit' } ], '' ), genError( 'Undefined, blank or undeclared form submit function' ), 'Return an error when formFunction is blank' );
+  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { name: 'myInputId', value: 'myInputValue', type: 'submit' } ], 'undelaredFormSubmitFunction()' ), genError( 'Undefined, blank or undeclared form submit function' ), 'Return an error when formFunction is undeclared' );
 
   // formData
-  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', undefined, 'submitMyForm()' ), genError( 'Undefined or blank or empty form data' ), 'Return an error when formData is undefined' );
-  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', '', 'submitMyForm()' ), genError( 'Undefined or blank or empty form data' ), 'Return an error when formData is blank' );
-  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [] , 'submitMyForm()' ), genError( 'Undefined or blank or empty form data' ), 'Return an error when formData is blank' );
+  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', undefined ), genError( 'Undefined or blank or empty form data' ), 'Return an error when formData is undefined' );
+  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', '' ), genError( 'Undefined or blank or empty form data' ), 'Return an error when formData is blank' );
+  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [], 'submitMyForm()'  ), genError( 'Undefined or blank or empty form data' ), 'Return an error when formData is blank' );
   assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ undefined ], 'submitMyForm()' ), genError( 'Undefined or blank or empty form data' ), 'Return an error when an element in formData is undefined' );
   assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { id: undefined, value: 'myInputValue', type: 'submit' } ], 'submitMyForm()' ), genError( 'Undefined or blank form data element id' ), 'Return an error when an element id in formData is undefined' );
   assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { id: '', value: 'myInputValue', type: 'submit' } ], 'submitMyForm()' ), genError( 'Undefined or blank form data element id' ), 'Return an error when an element id in formData is blank' );
@@ -47,8 +56,5 @@ QUnit.test( 'genForm', function( assert ) {
   assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { id: 'myInputId', value: 'myInputValue', type: undefined } ], 'submitMyForm()' ), genError( 'Undefined form data element type' ), 'Return an error when an element type in formData is undefined' );
   assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { id: 'myInputId', value: 'myInputValue', type: 'BadType' } ], 'submitMyForm()' ), genError( 'Bad form data element type' ), 'Return an error when an element type in formData is bad' );
   assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { id: 'myInputId', value: 'myInputValue', type: '' } ], 'submitMyForm()' ), genError( 'Bad form data element type' ), 'Return an error when an element type in formData is blank' );
-
-  //formSubmitFunction
-  assert.deepEqual( genForm( 'myFormId', 'myFormTitle', [ { id: 'myInputId', value: 'myInputValue', type: 'submit' } ], undefined ), genError( 'Undefined form submit function' ), 'Return an error when formSubmitFunction is undefined' );
 } );
 
